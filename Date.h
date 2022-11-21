@@ -10,8 +10,7 @@ private:
     std::string day;
 
 public:
-    Date(std::string date);
-    Date();
+    Date(std::string date = "");
 
 public:
     std::string get() const;

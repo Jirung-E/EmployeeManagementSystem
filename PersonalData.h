@@ -12,6 +12,7 @@ private:
 
 public:
     Rrn(std::string rrn);
+    Rrn() = default;
 
 public:
     std::string get() const;
@@ -28,6 +29,7 @@ private:
 
 public:
     PhoneNumber(std::string phone_number);
+    PhoneNumber() = default;
 
 public:
     std::string get() const;
@@ -40,6 +42,7 @@ private:
 
 public:
     BankAccount(std::string bank, std::string number);
+    BankAccount() = default;
 
 public:
     std::string get() const;
@@ -52,4 +55,13 @@ private:
     Rrn rrn;
     PhoneNumber phone_number;
     BankAccount bank_account;
+
+public:
+    PersonalData(std::string name, std::string address, const Rrn& rrn, const PhoneNumber& phone_number, const BankAccount& bank_account);
+    PersonalData(const PersonalData& other);
+    PersonalData() = default;
+    PersonalData& operator=(const PersonalData& other);
+
+public:
+    std::string get() const;
 };

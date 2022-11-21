@@ -34,10 +34,6 @@ Date::Date(std::string date) {
     day = std::format("{:0>2d}", tm->tm_mday);
 }
 
-Date::Date() : Date { "" } {
-
-}
-
 
 std::string Date::get() const {
     if(year == "" || month == "" || day == "") {
