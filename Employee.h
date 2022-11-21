@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <fstream>
 
 #include "PersonalData.h"
 #include "Date.h"
@@ -16,6 +17,7 @@ private:
 public:
     EmployeeNumber();
     EmployeeNumber(std::string employee_number);
+    EmployeeNumber& operator=(const EmployeeNumber& other) = default;
 
 public:
     std::string get() const;
@@ -29,7 +31,11 @@ private:
     int night;
 
 public:
-    Pay(int base, int allowance, int night);
+    Pay(int base = 0, int allowance = 0, int night = 0);
+
+public:
+    int getMonthlyPay() const;
+    std::string get() const;
 };
 
 
@@ -42,6 +48,14 @@ private:
     std::string workplace;
     Date start_work_date;
     Date end_work_date;
+
+public:
+    EmployeeData(std::string file_path);
+
+public:
+    EmployeeData loadData(std::string file_path);
+
+    std::string get() const;
 };
 
 
