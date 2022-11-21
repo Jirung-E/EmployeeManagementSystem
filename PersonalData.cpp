@@ -27,3 +27,33 @@ BankAccount::BankAccount(std::string bank, std::string number) : bank { bank }, 
 std::string BankAccount::get() const {
     return bank + " " + number;
 }
+
+
+PersonalData::PersonalData(std::string name, std::string address, const Rrn& rrn, const PhoneNumber& phone_number, const BankAccount& bank_account) :
+    name { name }, address { address }, rrn { rrn }, phone_number { phone_number }, bank_account { bank_account } {
+
+}
+
+PersonalData::PersonalData(const PersonalData& other) : PersonalData { other.name, other.address, other.rrn, other.phone_number, other.bank_account } {
+
+}
+
+PersonalData& PersonalData::operator=(const PersonalData& other) {
+    name = other.name;
+    address = other.address;
+    rrn = other.rrn;
+    phone_number = other.phone_number;
+    bank_account = other.bank_account;
+
+    return *this;
+}
+
+std::string PersonalData::get() const {
+    std::string result = name + '\n';
+    result += address + '\n';
+    result += rrn.get() + '\n';
+    result += phone_number.get() + '\n';
+    result += bank_account.get();
+
+    return result;
+}
