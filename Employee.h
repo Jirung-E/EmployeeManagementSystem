@@ -9,18 +9,18 @@
 
 class EmployeeNumber {
 private:
-    std::string first;
-    std::string last;
+    std::wstring first;
+    std::wstring last;
     const static int first_length = 4;
     const static int last_length = 3;
 
 public:
     EmployeeNumber();
-    EmployeeNumber(std::string employee_number);
+    EmployeeNumber(std::wstring employee_number);
     EmployeeNumber& operator=(const EmployeeNumber& other) = default;
 
 public:
-    std::string get() const;
+    std::wstring get() const;
 };
 
 
@@ -35,7 +35,7 @@ public:
 
 public:
     int getMonthlyPay() const;
-    std::string get() const;
+    std::wstring get() const;
 };
 
 
@@ -43,19 +43,19 @@ class EmployeeData {
 private:
     EmployeeNumber employee_number;
     PersonalData personal_data;
-    std::string duty;
+    std::wstring duty;
     Pay pay;
-    std::string workplace;
+    std::wstring workplace;
     Date start_work_date;
     Date end_work_date;
 
 public:
-    EmployeeData(std::string file_path);
+    EmployeeData(std::wstring file_path);
 
 public:
-    EmployeeData loadData(std::string file_path);
+    EmployeeData loadData(std::wstring file_path);
 
-    std::string get() const;
+    std::wstring get() const;
 };
 
 

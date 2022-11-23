@@ -36,6 +36,9 @@
     <ClCompile Include="PersonalData.cpp">
       <Filter>소스 파일\PersonalData</Filter>
     </ClCompile>
+    <ClCompile Include="EmployeeManagementSystem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Employee.h">

@@ -1,18 +1,23 @@
+#pragma warning(disable : 4996)
+
 #include "Employee.h"
 
 #include "Date.h"
 
+#include <codecvt>
+#include <iostream>
 
-EmployeeNumber::EmployeeNumber() : first { std::to_string(Date::getCurrentTime()->tm_year + 1900) }, last { "123" } {
+
+EmployeeNumber::EmployeeNumber() : first { std::to_wstring(Date::getCurrentTime()->tm_year + 1900) }, last { L"123" } {
 
 }
 
-EmployeeNumber::EmployeeNumber(std::string employee_number) : first { employee_number.substr(0, first_length) }, last { employee_number.substr(first_length+1, last_length) } {
+EmployeeNumber::EmployeeNumber(std::wstring employee_number) : first { employee_number.substr(0, first_length) }, last { employee_number.substr(first_length+1, last_length) } {
     
 }
 
-std::string EmployeeNumber::get() const {
-    return first + "-" + last;
+std::wstring EmployeeNumber::get() const {
+    return first + L"-" + last;
 }
 
 
@@ -24,42 +29,45 @@ int Pay::getMonthlyPay() const {
     return base + allowance + night;
 }
 
-std::string Pay::get() const {
-    std::string result = std::to_string(base) + '\n';
-    result += std::to_string(allowance) + '\n';
-    result += std::to_string(night) + '\n';
-    result += std::to_string(getMonthlyPay()) + '\n';
+std::wstring Pay::get() const {
+    std::wstring result = std::to_wstring(base) + L'\n';
+    result += std::to_wstring(allowance) + L'\n';
+    result += std::to_wstring(night) + L'\n';
+    result += std::to_wstring(getMonthlyPay()) + L'\n';
 
     return result;
 }
 
 
-EmployeeData::EmployeeData(std::string file_path) {
+EmployeeData::EmployeeData(std::wstring file_path) {
     loadData(file_path);
 }
 
 
-EmployeeData EmployeeData::loadData(std::string file_path) {
-    std::ifstream ifs(file_path);
+EmployeeData EmployeeData::loadData(std::wstring file_path) {
+    std::locale::global(std::locale("kor"));
+    std::wifstream ifs(file_path);
+    ifs.imbue(std::locale("korean"));
     if(ifs.fail()) {
         // error
+        printf("Error: No such file.");
         return *this;
     }
-    std::string en;
+    std::wstring en;
     std::getline(ifs, en);
     employee_number = EmployeeNumber { en };
 
-    std::string name;
+    std::wstring name;
     std::getline(ifs, name);
-    std::string addr;
+    std::wstring addr;
     std::getline(ifs, addr);
-    std::string rrn;
+    std::wstring rrn;
     std::getline(ifs, rrn);
-    std::string phone;
+    std::wstring phone;
     std::getline(ifs, phone);
-    std::string bank, number;
-    std::getline(ifs, bank, ' ');
-    std::getline(ifs, number, '\n');
+    std::wstring bank, number;
+    std::getline(ifs, bank, L' ');
+    std::getline(ifs, number, L'\n');
     Rrn r { rrn };
     PhoneNumber p { phone };
     BankAccount b { bank, number };
@@ -67,7 +75,7 @@ EmployeeData EmployeeData::loadData(std::string file_path) {
 
     std::getline(ifs, duty);
 
-    std::string p1, p2, p3;
+    std::wstring p1, p2, p3;
     std::getline(ifs, p1);
     std::getline(ifs, p2);
     std::getline(ifs, p3);
@@ -75,7 +83,7 @@ EmployeeData EmployeeData::loadData(std::string file_path) {
 
     std::getline(ifs, workplace);
 
-    std::string sd, ed;
+    std::wstring sd, ed;
     std::getline(ifs, sd);
     std::getline(ifs, ed);
     start_work_date = Date { sd };
@@ -86,14 +94,14 @@ EmployeeData EmployeeData::loadData(std::string file_path) {
     return *this;
 }
 
-std::string EmployeeData::get() const {
-    std::string result = employee_number.get() + '\n';
-    result += personal_data.get() + '\n';
-    result += duty + '\n';
-    result += pay.get();
-    result += workplace + '\n';
-    result += start_work_date.get() + '\n';
-    result += end_work_date.get() + '\n';
+std::wstring EmployeeData::get() const {
+    std::wstring result = std::wstring { employee_number.get() }.append(L"\n");
+    result.append(std::wstring { personal_data.get() });
+    result += L"\n";
+    result += std::wstring { pay.get() };
+    result += std::wstring { workplace } + L'\n';
+    result += std::wstring { start_work_date.get() } + L'\n';
+    result += std::wstring { end_work_date.get() } + L'\n';
 
     return result;
 }

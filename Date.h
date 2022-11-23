@@ -5,15 +5,15 @@
 
 class Date {
 private:
-    std::string year;
-    std::string month;
-    std::string day;
+    std::wstring year;
+    std::wstring month;
+    std::wstring day;
 
 public:
-    Date(std::string date = "");
+    Date(std::wstring date = L"");
 
 public:
-    std::string get() const;
+    std::wstring get() const;
 
     static struct tm* getCurrentTime();
 };
