@@ -3,8 +3,7 @@
 
 using namespace std;
 
-extern wchar_t* setUp(const wchar_t* file_path);
-extern wstring setUp_str(const wchar_t*);
+extern wchar_t* getData(const wchar_t* file_path);
 
 
 int main() {
@@ -12,9 +11,6 @@ int main() {
     //locale::global(std::locale("kor"));
     //wcout.imbue(locale("kor"));
 
-    wchar_t* ws = setUp(L"./data.txt");
+    wchar_t* ws = getData(L"./data.txt");
     wcout << ws << endl;
-
-    wstring view { setUp_str(L"./data.txt") };
-    wcout << view << endl;
 }

@@ -21,14 +21,8 @@ int test() {
     return 123;
 }
 
-std::wstring setUp_str(const wchar_t* file_path) {
-    std::wstring path { file_path };
-    EmployeeData ed { path };
-    return ed.get();
-}
-
-wchar_t* setUp(const wchar_t* file_path) {
-    std::wstring wstr { setUp_str(file_path) };
+wchar_t* getData(const wchar_t* file_path) {
+    std::wstring wstr { EmployeeData { std::wstring { file_path } }.get() };
     wcharstr = new wchar_t[wstr.length()];
     wcscpy(wcharstr, wstr.c_str());
     return wcharstr;
@@ -43,7 +37,7 @@ extern "C" {
     EXPORT wchar_t* str;        // lifetime 문제 때문에 전역변수 선언
 
     EXPORT const wchar_t* SetUp(const wchar_t* file_path) {
-        str = setUp(file_path);
+        str = getData(file_path);
         return str;
     }
 }
