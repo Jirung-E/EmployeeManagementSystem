@@ -17,11 +17,11 @@
 static wchar_t* wcharstr;                   // lifetime 문제 때문에 전역변수 선언
 
 
-int test() {
+int cpptest() {
     return 123;
 }
 
-wchar_t* getData(const wchar_t* file_path) {
+wchar_t* cppgetData(const wchar_t* file_path) {
     std::wstring wstr { EmployeeData { std::wstring { file_path } }.get() };
     wcharstr = new wchar_t[wstr.length()];
     wcscpy(wcharstr, wstr.c_str());
@@ -30,11 +30,11 @@ wchar_t* getData(const wchar_t* file_path) {
 
 
 extern "C" {
-    EXPORT int Test() {
-        return test();
+    EXPORT int test() {
+        return cpptest();
     }
 
-    EXPORT const wchar_t* SetUp(const wchar_t* file_path) {
-        return getData(file_path);
+    EXPORT const wchar_t* getData(const wchar_t* file_path) {
+        return cppgetData(file_path);
     }
 }

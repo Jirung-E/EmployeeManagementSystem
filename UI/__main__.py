@@ -6,14 +6,14 @@ from tkinter import *
 def emsSetUp(path):
     ems = ctypes.CDLL(path)                         # 필요시 try - except
 
-    global SetUp
-    SetUp = ems['SetUp']
+    global getData
+    getData = ems['getData']
 
-    SetUp.argtypes = [ ctypes.c_wchar_p ]
-    SetUp.restype = ctypes.c_wchar_p
+    getData.argtypes = [ ctypes.c_wchar_p ]
+    getData.restype = ctypes.c_wchar_p
 
 def loadData():
-    contents = SetUp("../data.txt")
+    contents = getData("../data.txt")
     print(contents)
     return contents
     
