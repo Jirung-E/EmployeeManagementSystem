@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 
-static wchar_t* wcharstr;
+static wchar_t* wcharstr;                   // lifetime 문제 때문에 전역변수 선언
 
 
 int test() {
@@ -34,10 +34,7 @@ extern "C" {
         return test();
     }
 
-    EXPORT wchar_t* str;        // lifetime 문제 때문에 전역변수 선언
-
     EXPORT const wchar_t* SetUp(const wchar_t* file_path) {
-        str = getData(file_path);
-        return str;
+        return getData(file_path);
     }
 }
