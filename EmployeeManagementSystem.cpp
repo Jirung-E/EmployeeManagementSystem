@@ -40,7 +40,7 @@ extern "C" {
         return test();
     }
 
-    EXPORT wchar_t* str;
+    EXPORT wchar_t* str;        // lifetime 문제 때문에 전역변수 선언
 
     EXPORT const wchar_t* SetUp(const wchar_t* file_path) {
         str = setUp(file_path);
