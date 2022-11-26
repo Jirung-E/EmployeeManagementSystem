@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\Date">
       <UniqueIdentifier>{b2b88baf-e1a2-4a53-b244-5bcb287c48ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\CSV">
+      <UniqueIdentifier>{b39e4787-3098-4f75-b58b-ad110e263099}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +42,9 @@
     <ClCompile Include="EmployeeManagementSystem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CSV.cpp">
+      <Filter>소스 파일\CSV</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Employee.h">
@@ -50,10 +56,21 @@
     <ClInclude Include="Date.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="DataReader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CSV.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt">
       <Filter>리소스 파일</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data.csv">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>
