@@ -4,7 +4,6 @@
 
 #include "Date.h"
 
-#include <codecvt>
 #include <iostream>
 
 
@@ -47,9 +46,7 @@ EmployeeData::EmployeeData(std::wstring file_path) {
 EmployeeData EmployeeData::loadData(std::wstring file_path) {
     std::locale::global(std::locale("kor"));
     std::wifstream ifs(file_path);
-    ifs.imbue(std::locale("korean"));
     if(ifs.fail()) {
-        // error
         printf("Error: No such file.");
         return *this;
     }

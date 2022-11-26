@@ -38,5 +38,3 @@ extern "C" {
         return cppgetData(file_path);
     }
 }
-
-// https://afsdzvcx123.tistory.com/entry/C-csv-%ED%8C%8C%EC%9D%BC-%EC%9D%BD%EA%B8%B0-%EB%B0%8F-%ED%8C%8C%EC%8B%B1-%EB%B0%A9%EB%B2%95
