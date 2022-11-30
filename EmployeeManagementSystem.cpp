@@ -7,6 +7,7 @@
 #pragma warning(disable:4996)
 
 #include "Employee.h"
+#include "CSV.h"
 
 #include <locale>
 #include <cwchar>
@@ -29,6 +30,22 @@ wchar_t* cppgetData(const wchar_t* file_path) {
 }
 
 
+
+
+
+
+
+CSVData* csv_data;
+
+void cpploadCSVData(const wchar_t* file_path) {
+    csv_data = new CSVData { file_path };
+}
+
+const wchar_t* cppcsvGet(int row, const wchar_t* column) {
+    return (*csv_data)[row][column];
+}
+
+
 extern "C" {
     EXPORT int test() {
         return cpptest();
@@ -36,5 +53,9 @@ extern "C" {
 
     EXPORT const wchar_t* getData(const wchar_t* file_path) {
         return cppgetData(file_path);
+    }
+
+    EXPORT void loadCSVData(const wchar_t* file_path) {
+        cpploadCSVData(file_path);
     }
 }
