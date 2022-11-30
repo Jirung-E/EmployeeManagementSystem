@@ -4,7 +4,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-mainwindow = uic.loadUiType("../mainwindow.ui")[0]
+mainwindow = uic.loadUiType("./UI/mainwindow.ui")[0]
 
 class MainWindow(QMainWindow, mainwindow):
     def __init__(self):
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow, mainwindow):
 
     def __loadTextbox(self):
         self.textbox = {
-            "employee_number": self.findChild(QLineEdit, "employee_number_textbox") ,
+            "employee_number": self.findChild(QLineEdit, "employee_number_textbox"),
             "name": self.findChild(QLineEdit, "name_textbox"),
             "address": self.findChild(QLineEdit, "address_textbox"),
             "rrn": self.findChild(QLineEdit, "rrn_textbox"),
@@ -43,13 +43,22 @@ class MainWindow(QMainWindow, mainwindow):
             "add": self.findChild(QPushButton, "add_button"),
             "load": self.findChild(QPushButton, "load_button"),
         }
-        self.button["load"].clicked.connect(loadData)
+        self.button["load"].clicked.connect(self.setName)
+
+    def setName(self):
+        loadData()
+        selectRow(1)
+        name = getItem("이름")
+        print(name)
+        self.textbox["name"].setText(name)
 
 def emsSetUp(path):
     ems = ctypes.CDLL(path)                         # 필요시 try - except
 
     global getData
     global loadCSVData
+    global csvSelectRow
+    global csvGetItem
 
     getData = ems['getData']
     getData.argtypes = [ ctypes.c_wchar_p ]
@@ -58,15 +67,28 @@ def emsSetUp(path):
     loadCSVData = ems["loadCSVData"]
     loadCSVData.argtypes = [ ctypes.c_wchar_p ]
 
+    csvSelectRow = ems["csvSelectRow"]
+    csvSelectRow.argtypes = [ ctypes.c_int ]
+
+    csvGetItem = ems['csvGetItem']
+    csvGetItem.argtypes = [ ctypes.c_wchar_p ]
+    csvGetItem.restype = ctypes.c_wchar_p
+
+
+def selectRow(index: ctypes.c_int):
+    csvSelectRow(index)
+
+def getItem(column: ctypes.c_wchar_p):
+    return csvGetItem(column)
+
 def loadData():
-    loadCSVData("../../data.csv")
+    loadCSVData("./data.csv")
     # contents = getData("../../data.txt")
     # print(contents)
     # return contents
 
 
-
-path = "../../x64/Release/EmployeeManagementSystem"        # 필요시 input
+path = "./x64/Release/EmployeeManagementSystem"        # 필요시 input
 emsSetUp(path)
 
 app = QApplication(sys.argv)

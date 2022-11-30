@@ -12,7 +12,7 @@
 #include <locale>
 #include <cwchar>
 #include <iostream>
-#include <stdlib.h>
+#include <codecvt>
 
 
 static wchar_t* wcharstr;                   // lifetime 문제 때문에 전역변수 선언
@@ -34,15 +34,48 @@ wchar_t* cppgetData(const wchar_t* file_path) {
 
 
 
+DataReader* reader;
+CSVData csv_data;
+std::list<std::wstring>* current_data;
+int current_index;
 
-CSVData* csv_data;
 
 void cpploadCSVData(const wchar_t* file_path) {
-    csv_data = new CSVData { file_path };
+    reader = new CSVReader { };
+    std::wcout.imbue(std::locale("kor"));
+    //std::wcout << L"내용:" << reader->read(file_path) << std::endl;
+    std::wstring contents { reader->read(file_path) };
+    //std::cout << "?>?????" << std::endl;
+
+    //std::wcout << L"contents: " << std::endl;
+    //std::wcout << contents << std::endl;
+    csv_data = CSVData { contents };
 }
 
-const wchar_t* cppcsvGet(int row, const wchar_t* column) {
-    return (*csv_data)[row][column];
+void cppcsvSelectRow(int index) {
+    current_index = index;
+    current_data = &(csv_data[index]);
+}
+
+const wchar_t* cppcsvGetItem(const wchar_t* column) {
+    int i=0;
+    for(const std::wstring& e : csv_data[0]) {
+        if(column == e) {
+            std::wcout << column << std::endl;
+            std::wcout << e << std::endl;
+            break;
+        }
+        ++i;
+    }
+    int index=0;
+    for(const std::wstring& e : *current_data) {
+        if(i == index) {
+            std::wcout << e << std::endl;
+            return e.c_str();
+        }
+        ++index;
+    }
+    return L"";
 }
 
 
@@ -57,5 +90,13 @@ extern "C" {
 
     EXPORT void loadCSVData(const wchar_t* file_path) {
         cpploadCSVData(file_path);
+    }
+
+    EXPORT void csvSelectRow(int index) {
+        cppcsvSelectRow(index);
+    }
+
+    EXPORT const wchar_t* csvGetItem(const wchar_t* column) {
+        return cppcsvGetItem(column);
     }
 }

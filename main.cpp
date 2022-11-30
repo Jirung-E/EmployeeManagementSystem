@@ -12,6 +12,9 @@
 using namespace std;
 
 extern wchar_t* cppgetData(const wchar_t* file_path);
+extern void cpploadCSVData(const wchar_t* file_path);
+extern void cppcsvSelectRow(int index);
+extern const wchar_t* cppcsvGetItem(const wchar_t* column);
 
 
 int main() {
@@ -19,28 +22,33 @@ int main() {
     //locale::global(std::locale("kor"));
     //wcout.imbue(locale("kor"));
 
-    std::wifstream wif { L"./data.csv" };
-    wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-    std::wstringstream wss;
-    wss << wif.rdbuf();
-    wcout << wss.str() << endl;
+    //std::wifstream wif { L"./data.csv" };
+    //wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+    //std::wstringstream wss;
+    //wss << wif.rdbuf();
+    //wcout << wss.str() << endl;
 
-    wchar_t* ws = cppgetData(L"./data.txt");
-    wcout << ws << endl;
+    //wchar_t* ws = cppgetData(L"./data.txt");
+    //wcout << ws << endl;
 
-    DataReader* reader = new CSVReader;
-    CSVData data { reader->read(L"./data.csv") };
+    //DataReader* reader = new CSVReader;
+    //CSVData data { reader->read(L"./data.csv") };
 
-    cout << endl;
+    //cout << endl;
 
-    cout << "data[이름]" << endl;
-    for(const wstring& e : data[L"이름"]) {
-        wcout << e << endl;
-    }
-    cout << endl;
+    //cout << "data[이름]" << endl;
+    //for(const wstring& e : data[L"이름"]) {
+    //    wcout << e << endl;
+    //}
+    //cout << endl;
 
-    cout << "data[1]" << endl;
-    for(const wstring& e : data[1]) {
-        wcout << e << endl;
-    }
+    //cout << "data[1]" << endl;
+    //for(const wstring& e : data[1]) {
+    //    wcout << e << endl;
+    //}
+
+
+    cpploadCSVData(L"./data.csv");
+    cppcsvSelectRow(1);
+    wcout << cppcsvGetItem(L"이름");
 }
