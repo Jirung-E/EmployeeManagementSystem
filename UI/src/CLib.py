@@ -2,7 +2,7 @@ import ctypes
 
 
 def emsSetUp(path):
-    ems = ctypes.CDLL(path)                         # 필요시 try - except
+    ems = ctypes.CDLL(path)                         # �ʿ�� try - except
 
     global getData
     global loadCSVData
@@ -24,18 +24,34 @@ def emsSetUp(path):
     csvGetItem.restype = ctypes.c_wchar_p
 
 
-def selectRow(index: ctypes.c_int):
-    csvSelectRow(index)
+class CSV:
+    @staticmethod
+    def selectRow(index: ctypes.c_int):
+        csvSelectRow(index)
 
-def getItem(column: ctypes.c_wchar_p):
-    return csvGetItem(column)
+    @staticmethod
+    def getItem(column: ctypes.c_wchar_p):
+        type(csvGetItem(column))
+        return csvGetItem(column)
 
-def loadData():
-    loadCSVData("./data.csv")
-    # contents = getData("../../data.txt")
-    # print(contents)
-    # return contents
+    @staticmethod
+    def loadData():
+        loadCSVData("./data.csv")
+        # contents = getData("../../data.txt")
+        # print(contents)
+        # return contents
 
 
 path = "./x64/Release/EmployeeManagementSystem.dll"
+# path = "../../x64/Release/EmployeeManagementSystem.dll"
 emsSetUp(path)
+
+
+if __name__ == "__main__":
+    print("CLib.py - Test Start")
+    print("loadData:")
+    CSV.loadData()
+    print("selectRow:")
+    CSV.selectRow(1)
+    print("getItem:")
+    print(CSV.getItem("사원번호"))

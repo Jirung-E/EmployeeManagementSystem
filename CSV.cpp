@@ -68,6 +68,10 @@ std::list<std::wstring>& CSVData::operator[](int index) {
 std::wstring CSVReader::read(const std::wstring& file_path) {
     std::wifstream ifs { file_path };
 
+    if(ifs.fail()) {
+        std::cout << "?????" << std::endl;
+    }
+
     ifs.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
 
     std::wstringstream wss;

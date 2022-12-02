@@ -72,5 +72,8 @@
     <None Include="data.csv">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="test.csv">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>
