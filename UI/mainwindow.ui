@@ -988,13 +988,17 @@
  <tabstops>
   <tabstop>employee_number_textbox</tabstop>
   <tabstop>name_textbox</tabstop>
+  <tabstop>address_textbox</tabstop>
   <tabstop>rrn_textbox</tabstop>
+  <tabstop>phone_number_textbox</tabstop>
+  <tabstop>bank_textbox</tabstop>
+  <tabstop>duty_textbox</tabstop>
   <tabstop>pay_textbox</tabstop>
   <tabstop>pay_viewmorebutton</tabstop>
+  <tabstop>workplace_textbox</tabstop>
   <tabstop>startdate_textbox</tabstop>
   <tabstop>enddate_textbox</tabstop>
   <tabstop>workdate_viewmorebutton</tabstop>
-  <tabstop>phone_number_textbox</tabstop>
   <tabstop>add_button</tabstop>
   <tabstop>load_button</tabstop>
   <tabstop>edit_button</tabstop>

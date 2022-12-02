@@ -61,8 +61,8 @@ const wchar_t* cppcsvGetItem(const wchar_t* column) {
     int i=0;
     for(const std::wstring& e : csv_data[0]) {
         if(column == e) {
-            std::wcout << column << std::endl;
-            std::wcout << e << std::endl;
+            //std::wcout << column << std::endl;
+            //std::wcout << e << std::endl;
             break;
         }
         ++i;
@@ -70,7 +70,7 @@ const wchar_t* cppcsvGetItem(const wchar_t* column) {
     int index=0;
     for(const std::wstring& e : *current_data) {
         if(i == index) {
-            std::wcout << e << std::endl;
+            //std::wcout << e << std::endl;
             return e.c_str();
         }
         ++index;
