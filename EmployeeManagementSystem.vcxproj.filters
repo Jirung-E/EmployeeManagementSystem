@@ -13,37 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Employee">
-      <UniqueIdentifier>{88654edf-5d24-4dcc-b662-862866eef45e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\PersonalData">
-      <UniqueIdentifier>{0c1b7d5a-ec92-4332-b8a9-ff9ccbc570c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Date">
-      <UniqueIdentifier>{b2b88baf-e1a2-4a53-b244-5bcb287c48ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\CSV">
-      <UniqueIdentifier>{b39e4787-3098-4f75-b58b-ad110e263099}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Employee.cpp">
-      <Filter>소스 파일\Employee</Filter>
-    </ClCompile>
-    <ClCompile Include="Date.cpp">
-      <Filter>소스 파일\Date</Filter>
-    </ClCompile>
-    <ClCompile Include="PersonalData.cpp">
-      <Filter>소스 파일\PersonalData</Filter>
-    </ClCompile>
-    <ClCompile Include="EmployeeManagementSystem.cpp">
+    <ClCompile Include="EXPORT_CPP.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CSV.cpp">
-      <Filter>소스 파일\CSV</Filter>
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Date.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Employee.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonalData.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EXPORT.c">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data.csv">
-      <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="test.csv">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>

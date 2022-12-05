@@ -133,9 +133,10 @@
     <ClCompile Include="CSV.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Employee.cpp" />
-    <ClCompile Include="EmployeeManagementSystem.cpp">
+    <ClCompile Include="EXPORT_CPP.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="EXPORT.c" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -154,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data.csv" />
-    <None Include="test.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
