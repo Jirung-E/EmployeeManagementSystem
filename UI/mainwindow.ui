@@ -922,12 +922,13 @@
   <tabstop>bank_textbox</tabstop>
   <tabstop>duty_textbox</tabstop>
   <tabstop>pay_textbox</tabstop>
-  <tabstop>pay_viewmorebutton</tabstop>
   <tabstop>workplace_textbox</tabstop>
   <tabstop>startdate_textbox</tabstop>
   <tabstop>enddate_textbox</tabstop>
+  <tabstop>pay_viewmorebutton</tabstop>
   <tabstop>workdate_viewmorebutton</tabstop>
   <tabstop>load_button</tabstop>
+  <tabstop>add_button</tabstop>
   <tabstop>edit_button</tabstop>
   <tabstop>save_button</tabstop>
   <tabstop>save_toolbutton</tabstop>
