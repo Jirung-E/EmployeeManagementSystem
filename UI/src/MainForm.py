@@ -53,7 +53,7 @@ class Main(QMainWindow, mainwindow):
         self.textbox["phone_number"].setText(data.getItem("전화번호"))
         self.textbox["bank"].setText(data.getItem("계좌"))
         self.textbox["duty"].setText(data.getItem("직책"))
-        monthly_pay = int(data.getItem("기본수당")) + int(data.getItem("야간수당")) + int(data.getItem("특수수당"))
+        monthly_pay = sum(map(int, [ data.getItem("기본수당"), data.getItem("야간수당"), data.getItem("특수수당") ]))
         self.textbox["pay"].setText(str(monthly_pay))
         self.textbox["workplace"].setText(data.getItem("사업장"))
         self.textbox["start_date"].setText(data.getItem("입사일"))
