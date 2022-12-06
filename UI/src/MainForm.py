@@ -45,7 +45,24 @@ class Main(QMainWindow, mainwindow):
         self.button["load"].clicked.connect(self.__buttonClick_load)
 
     def __buttonClick_load(self):
-        data.selectRow(2)
+        self.__showLoadWindow()
+
+    def __showLoadWindow(self):
+        data.selectRow(0)
+        header = f'[{data.getItem("사원번호")}] {data.getItem("이름")} ({data.getItem("사업장")})'
+        employee_list = []
+        for i in range(1, 10):
+            data.selectRow(i)
+            item = f'[{data.getItem("사원번호")}] {data.getItem("이름")} ({data.getItem("사업장")})'
+            if item == header:
+                break
+            employee_list.append(item)
+        employee, ok = QInputDialog.getItem(self, "선택", "선택하세요", employee_list, 0, False)
+        if ok:
+            data.selectRow(employee_list.index(employee) + 1)
+            self.__show()
+
+    def __show(self):
         self.textbox["employee_number"].setText(data.getItem("사원번호"))
         self.textbox["name"].setText(data.getItem("이름"))
         self.textbox["address"].setText(data.getItem("주소"))
