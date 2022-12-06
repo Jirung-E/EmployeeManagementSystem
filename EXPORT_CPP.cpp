@@ -74,4 +74,24 @@ extern "C" {
         }
         return L"";
     }
+
+    void cppcsvSetItem(const wchar_t* column, const wchar_t* data) {
+        int i = 0;
+        for(const std::wstring& e : csv_data[0]) {
+            if(column == e) {
+                //std::wcout << column << std::endl;
+                //std::wcout << e << std::endl;
+                break;
+            }
+            ++i;
+        }
+        int index = 0;
+        for(std::wstring& e : *current_data) {
+            if(i == index) {
+                //std::wcout << e << std::endl;
+                e = data;
+            }
+            ++index;
+        }
+    }
 }

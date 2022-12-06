@@ -12,6 +12,7 @@ extern wchar_t* cppgetData(const wchar_t* file_path);
 extern void cpploadCSVData(const wchar_t* file_path);
 extern void cppcsvSelectRow(int index);
 extern const wchar_t* cppcsvGetItem(const wchar_t* column);
+extern void cppcsvSetItem(const wchar_t* column, const wchar_t* data);
 
 
 EXPORT int test() {
@@ -32,4 +33,8 @@ EXPORT void csvSelectRow(int index) {
 
 EXPORT const wchar_t* csvGetItem(const wchar_t* column) {
     return cppcsvGetItem(column);
+}
+
+EXPORT void csvSetItem(const wchar_t* column, const wchar_t* data) {
+    return cppcsvSetItem(column, data);
 }

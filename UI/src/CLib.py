@@ -8,6 +8,7 @@ def emsSetUp(path):
     global loadCSVData
     global csvSelectRow
     global csvGetItem
+    global csvSetItem
 
     getData = ems['getData']
     getData.argtypes = [ ctypes.c_wchar_p ]
@@ -23,6 +24,9 @@ def emsSetUp(path):
     csvGetItem.argtypes = [ ctypes.c_wchar_p ]
     csvGetItem.restype = ctypes.c_wchar_p
 
+    csvSetItem = ems['csvSetItem']
+    csvSetItem.argtypes = [ ctypes.c_wchar_p, ctypes.c_wchar_p ]
+
 
 class CSV:
     @staticmethod
@@ -31,8 +35,11 @@ class CSV:
 
     @staticmethod
     def getItem(column: ctypes.c_wchar_p):
-        type(csvGetItem(column))
         return csvGetItem(column)
+
+    @staticmethod
+    def setItem(column: ctypes.c_wchar_p, data: ctypes.c_wchar_p):
+        return csvSetItem(column, data)
 
     @staticmethod
     def loadData():
@@ -53,5 +60,9 @@ if __name__ == "__main__":
     CSV.loadData()
     print("selectRow:")
     CSV.selectRow(1)
+    print("getItem:")
+    print(CSV.getItem("사원번호"))
+    print("setItem")
+    CSV.setItem("사원번호", "2022-987")
     print("getItem:")
     print(CSV.getItem("사원번호"))
