@@ -10,6 +10,9 @@
 
 
  ## UI
+ - [ ] GuiInterface 완성하기
+ - [ ] PyQt5Interface 완성하기
+
  - [x] 불러오기 UI 추가
  - [ ] 불러오기 UI 수정(검색기능)
 
