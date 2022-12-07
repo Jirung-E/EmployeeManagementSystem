@@ -1,26 +1,14 @@
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
+from Gui.Windows import Window
 
-from CSV import *
+from GuiInterfaces.PyQt5.Windows.MainForm import *
 
-mainwindow = uic.loadUiType("./UI/mainwindow.ui")[0]
 
-class Main(QMainWindow, mainwindow):
+class MainWindow(Window):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
-        
-        self.editable = False
-        self.will_save = False
-        self.__loadTextbox()
-        self.__loadButton()
-        # self.contents = Contents()
-        # self.contents.add(self.textbox)
-        # self.contents.setEditable(False)
-        # self.button["edit"].setEnabled(False)
 
-    def __loadTextbox(self):
-        self.textbox = {
+    def _loadTextboxes(self):
+        self.textboxes = {
             "employee_number": self.findChild(QLineEdit, "employee_number_textbox"),
             "name": self.findChild(QLineEdit, "name_textbox"),
             "address": self.findChild(QLineEdit, "address_textbox"),
@@ -34,8 +22,8 @@ class Main(QMainWindow, mainwindow):
             "end_date": self.findChild(QLineEdit, "enddate_textbox"),
         }
 
-    def __loadButton(self):
-        self.button = {
+    def _loadButtons(self):
+        self.buttons = {
             "edit": self.findChild(QPushButton, "edit_button"), 
             "save": self.findChild(QPushButton, "save_button"),
             "save_tool": self.findChild(QToolButton, "save_toolbutton"),

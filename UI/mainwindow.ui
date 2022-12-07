@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1100</width>
-    <height>680</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,7 +38,7 @@
       <x>10</x>
       <y>577</y>
       <width>1081</width>
-      <height>61</height>
+      <height>68</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="Layout_10">
@@ -71,6 +71,12 @@
        </property>
        <item>
         <widget class="QPushButton" name="edit_button">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>수정</string>
          </property>
@@ -95,6 +101,12 @@
              <height>24</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>저장(&amp;S)</string>
            </property>
@@ -114,6 +126,12 @@
              <height>24</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
@@ -131,7 +149,7 @@
       <x>10</x>
       <y>10</y>
       <width>1081</width>
-      <height>361</height>
+      <height>511</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -149,15 +167,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>사원번호</string>
@@ -171,6 +195,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -209,15 +239,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>이름</string>
@@ -234,6 +270,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -272,15 +314,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>주소</string>
@@ -297,6 +345,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -335,15 +389,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>주민번호</string>
@@ -357,6 +417,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -395,15 +461,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>전화번호</string>
@@ -423,6 +495,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -461,15 +539,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>계좌</string>
@@ -477,7 +561,47 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="bank_textbox">
+          <widget class="QLineEdit" name="bank_textbox_1">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="accessibleName">
+            <string/>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="bank_textbox_2">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -486,6 +610,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -524,15 +654,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>직책</string>
@@ -546,6 +682,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -584,15 +726,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>수당</string>
@@ -606,6 +754,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -644,6 +798,12 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
@@ -663,15 +823,21 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>80</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>사업장</string>
@@ -685,6 +851,12 @@
              <width>16777215</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
            </property>
            <property name="toolTip">
             <string/>
@@ -731,15 +903,21 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>50</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>80</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>11</pointsize>
+              </font>
              </property>
              <property name="text">
               <string>입사일</string>
@@ -759,6 +937,12 @@
                <width>16777215</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>11</pointsize>
+              </font>
              </property>
              <property name="toolTip">
               <string/>
@@ -805,6 +989,12 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>...</string>
            </property>
@@ -822,15 +1012,21 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>50</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>50</width>
+               <width>80</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>11</pointsize>
+              </font>
              </property>
              <property name="text">
               <string>퇴사일</string>
@@ -850,6 +1046,12 @@
                <width>16777215</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>11</pointsize>
+              </font>
              </property>
              <property name="toolTip">
               <string/>
@@ -884,6 +1086,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QPushButton" name="load_button">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>불러오기</string>
          </property>
@@ -891,6 +1099,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="add_button">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>추가</string>
          </property>
@@ -919,7 +1133,7 @@
   <tabstop>address_textbox</tabstop>
   <tabstop>rrn_textbox</tabstop>
   <tabstop>phone_number_textbox</tabstop>
-  <tabstop>bank_textbox</tabstop>
+  <tabstop>bank_textbox_2</tabstop>
   <tabstop>duty_textbox</tabstop>
   <tabstop>pay_textbox</tabstop>
   <tabstop>workplace_textbox</tabstop>
