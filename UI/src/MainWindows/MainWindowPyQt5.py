@@ -51,7 +51,7 @@ class EMS(MainWindow):
         self.buttons = {
             "edit": QtButton(self.origin, "edit_button"), 
             "save": QtButton(self.origin, "save_button"),
-            "save_tool": QtButton(self.origin, "save_toolbutton"),
+            "save_tool": QtButton(self.origin, "save_tool_button"),
             "add": QtButton(self.origin, "add_button"),
             "load": QtButton(self.origin, "load_button")
         }
@@ -62,14 +62,17 @@ class EMS(MainWindow):
 
     def _setEditable(self, flag: bool):
         self.__is_editable = flag
+        for e in self.textboxes.values():
+            e.setEditable(flag)
+        self.buttons["load"].setEnabled(not flag)
+        self.buttons["add"].setEnabled(not flag)
+        self.buttons["save_tool"].setHidden(flag)
         if flag is True:
             self.buttons["edit"].setText("취소")
             self.buttons["save"].setText("확인")
         else:
             self.buttons["edit"].setText("수정")
             self.buttons["save"].setText("저장")
-        for e in self.textboxes.values():
-            e.setEditable(flag)
 
     def __buttonClick_edit(self):
         if self.__is_editable is True:

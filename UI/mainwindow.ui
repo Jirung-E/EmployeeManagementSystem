@@ -113,7 +113,13 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="save_toolbutton">
+          <widget class="QPushButton" name="save_tool_button">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -122,7 +128,7 @@
            </property>
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
+             <width>27</width>
              <height>24</height>
             </size>
            </property>
@@ -1145,7 +1151,6 @@
   <tabstop>add_button</tabstop>
   <tabstop>edit_button</tabstop>
   <tabstop>save_button</tabstop>
-  <tabstop>save_toolbutton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

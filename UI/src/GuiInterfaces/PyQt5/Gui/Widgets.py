@@ -4,10 +4,21 @@ import Gui.Widgets
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QPalette, QColor
 
 
-class QtButton(Gui.Widgets.Button):
+class QtWidget(Gui.Widgets.Widget):
+    def __init__(self, origin: QWidget):
+        super().__init__(origin)
+
+    def setEnabled(self, flag: bool):
+        self.origin.setEnabled(flag)
+        
+    def setHidden(self, flag: bool):
+        self.origin.setHidden(flag)
+
+
+class QtButton(Gui.Widgets.Button, QtWidget):
     def __init__(self, window: QMainWindow, name: str):
         super().__init__(window.findChild(QPushButton, name))
 
@@ -18,9 +29,9 @@ class QtButton(Gui.Widgets.Button):
         self.origin.setText(text)
         
 
-class QtTextbox(Gui.Widgets.Textbox):
-    def __init__(self):
-        self.origin: QWidget
+class QtTextbox(Gui.Widgets.Textbox, QtWidget):
+    def __init__(self, origin):
+        super().__init__(origin)
 
     @abstractmethod
     def setEditable(self, flag: bool):
@@ -39,10 +50,9 @@ class QtTextbox(Gui.Widgets.Textbox):
         self.origin.setPalette(palette)
 
 
-class QtLineEdit(Gui.Widgets.LineEdit, QtTextbox):
+class QtLineEdit(QtTextbox):
     def __init__(self, window: QMainWindow, name: str):
-        super().__init__(name)
-        self.origin = window.findChild(QLineEdit, name)
+        super().__init__(window.findChild(QLineEdit, name))
 
     def setText(self, text: str):
         self.origin.setText(text)
@@ -51,21 +61,20 @@ class QtLineEdit(Gui.Widgets.LineEdit, QtTextbox):
         self.origin.setReadOnly(not flag)
 
         if flag is False:
-            self.setColor(Qt.lightGray)
+            self.setColor(QColor(220, 220, 220))
         else:
             self.setColor(Qt.white)
 
 
-class QtCombobox(Gui.Widgets.Combobox, QtTextbox):
+class QtCombobox(QtTextbox):
     def __init__(self, window: QMainWindow, name: str):
-        super().__init__(name)
-        self.origin = window.findChild(name)
+        super().__init__(window.findChild(name))
 
     def setText(self, text: str):
         self.origin.setCurrentText(text)
 
     def setEditable(self, flag: bool):
-        self.setEnabled(~flag)
+        self.setEnabled(not flag)
 
 
 if __name__ == "__main__":
