@@ -11,9 +11,5 @@ class CSVData:
     def getItem(self, column: str):
         return CSV.getItem(column)
 
-    def loadData(self):
-        CSV.loadData()
-
-
-data = CSVData()
-data.loadData()
+    def loadData(self, file_path):
+        CSV.loadData(file_path)

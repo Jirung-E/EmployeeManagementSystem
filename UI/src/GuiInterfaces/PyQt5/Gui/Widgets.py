@@ -8,8 +8,15 @@ from PyQt5.QtGui import QPalette
 
 
 class QtButton(Gui.Widgets.Button):
-    def __init__(self):
-        self.origin: QWidget
+    def __init__(self, window: QMainWindow, name: str):
+        super().__init__(window.findChild(QPushButton, name))
+
+    def bindFunction(self, func: callable):
+        self.origin.clicked.connect(func)
+
+    def setText(self, text: str):
+        self.origin.setText(text)
+        
 
 class QtTextbox(Gui.Widgets.Textbox):
     def __init__(self):
@@ -32,10 +39,10 @@ class QtTextbox(Gui.Widgets.Textbox):
         self.origin.setPalette(palette)
 
 
-class QtLineEdit(Gui.Widgets.LineEdit):
+class QtLineEdit(Gui.Widgets.LineEdit, QtTextbox):
     def __init__(self, window: QMainWindow, name: str):
-        super().__init__()
-        self.textboxes = [ window.findChild(QLineEdit, name) ]
+        super().__init__(name)
+        self.origin = window.findChild(QLineEdit, name)
 
     def setText(self, text: str):
         self.origin.setText(text)
@@ -43,21 +50,15 @@ class QtLineEdit(Gui.Widgets.LineEdit):
     def setEditable(self, flag: bool):
         self.origin.setReadOnly(not flag)
 
-        if isinstance(self.origin, list):
-            for e in self.origin:
-                if flag is False:
-                    e.setColor(Qt.lightGray)
-                else:
-                    e.setColor(Qt.white)
+        if flag is False:
+            self.setColor(Qt.lightGray)
         else:
-            if flag is False:
-                self.setColor(Qt.lightGray)
-            else:
-                self.setColor(Qt.white)
+            self.setColor(Qt.white)
 
 
-class QtCombobox(Gui.Widgets.Combobox):
+class QtCombobox(Gui.Widgets.Combobox, QtTextbox):
     def __init__(self, window: QMainWindow, name: str):
+        super().__init__(name)
         self.origin = window.findChild(name)
 
     def setText(self, text: str):

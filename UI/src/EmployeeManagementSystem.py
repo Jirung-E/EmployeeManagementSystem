@@ -1,14 +1,21 @@
 from GuiController.GuiController import GuiController
+from Gui.Windows import MainWindow
 from GuiInterfaces.PyQt5.PyQt5Interface import *
+from GuiInterfaces.Tkinter.TkinterInterface import *
 
-from GuiInterfaces.PyQt5.Windows.MainForm import MainWindow
+from MainWindows.MainWindowPyQt5 import EMS
+# from MainWindows.MainWindowTkinter import EMS
 
 
 def main():
     gui_interface: GuiInterface
+    window: MainWindow
     
     gui_interface = PyQt5Interface()
-    GuiController(gui_interface).run(MainWindow())
+    # gui_interface = TkinterInterface()
+    window = EMS()
+
+    GuiController(gui_interface).run(window)
 
 
 if __name__ == "__main__":

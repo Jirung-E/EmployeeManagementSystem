@@ -10,5 +10,5 @@ class PyQt5Interface(GuiInterface):
         self.app = QApplication(sys.argv)
 
     def run(self, window):
-        window.show()
+        window.origin.show()
         self.app.exec_()

@@ -8,4 +8,4 @@ class TkinterInterface(GuiInterface):
         pass
 
     def run(self, window):
-        window.mainloop()
+        window.origin.mainloop()

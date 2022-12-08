@@ -10,12 +10,13 @@ class Window(ABC):
         self.textboxes: Dict[str, Textbox]
         self.buttons: Dict[str, Button]
 
-        self.editable = False
-
-    @abstractmethod
     def _loadTextboxes(self):
         pass
 
-    @abstractmethod
     def _loadButtons(self):
         pass
+
+
+class MainWindow(Window):
+    def __init__(self, window):
+        self.origin = window

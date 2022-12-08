@@ -34,16 +34,16 @@ class CSV:
         csvSelectRow(index)
 
     @staticmethod
-    def getItem(column: ctypes.c_wchar_p):
+    def getItem(column: ctypes.c_wchar_p) -> str:
         return csvGetItem(column)
 
     @staticmethod
     def setItem(column: ctypes.c_wchar_p, data: ctypes.c_wchar_p):
-        return csvSetItem(column, data)
+        csvSetItem(column, data)
 
     @staticmethod
-    def loadData():
-        loadCSVData("./data.csv")
+    def loadData(file_path: str):
+        loadCSVData(file_path)
         # contents = getData("../../data.txt")
         # print(contents)
         # return contents
