@@ -1139,6 +1139,7 @@
   <tabstop>address_textbox</tabstop>
   <tabstop>rrn_textbox</tabstop>
   <tabstop>phone_number_textbox</tabstop>
+  <tabstop>bank_textbox_1</tabstop>
   <tabstop>bank_textbox_2</tabstop>
   <tabstop>duty_textbox</tabstop>
   <tabstop>pay_textbox</tabstop>
@@ -1151,6 +1152,7 @@
   <tabstop>add_button</tabstop>
   <tabstop>edit_button</tabstop>
   <tabstop>save_button</tabstop>
+  <tabstop>save_tool_button</tabstop>
  </tabstops>
  <resources/>
  <connections/>

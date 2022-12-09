@@ -23,6 +23,13 @@ data = CSVData()
 data.loadData("./data.csv")
 
 
+class ButtonManager:
+    def __init__(self, buttons: QtButton):
+        self.buttons = buttons
+
+    def __getitem__(self, key: str):
+        return self.buttons[key]
+
 class EMS(MainWindow):
     def __init__(self):
         super().__init__(MainForm())
@@ -31,6 +38,7 @@ class EMS(MainWindow):
         self._bindFunctionsToButtons()
         self.__is_editable: bool = False
         self._setEditable(False)
+        self.buttons["edit"].setEnabled(False)
 
     def _loadTextboxes(self):
         self.textboxes = {
@@ -57,8 +65,11 @@ class EMS(MainWindow):
         }
 
     def _bindFunctionsToButtons(self):
-        self.buttons["load"].bindFunction(self.__buttonClick_load)
         self.buttons["edit"].bindFunction(self.__buttonClick_edit)
+        self.buttons["save"].bindFunction(self.__buttonClick_edit)
+        self.buttons["save_tool"].bindFunction(self.__buttonClick_edit)
+        self.buttons["add"].bindFunction(self.__buttonClick_edit)
+        self.buttons["load"].bindFunction(self.__buttonClick_load)
 
     def _setEditable(self, flag: bool):
         self.__is_editable = flag
@@ -96,6 +107,7 @@ class EMS(MainWindow):
         employee, ok = QInputDialog.getItem(self.origin, "선택", "선택하세요", employee_list, 0, False)
         if ok:
             data.selectRow(employee_list.index(employee) + 1)
+            self.buttons["edit"].setEnabled(True)
             self.__show()
 
     def __show(self):
