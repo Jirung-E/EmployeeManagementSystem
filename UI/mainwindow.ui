@@ -19,11 +19,17 @@
     <verstretch>100</verstretch>
    </sizepolicy>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <property name="acceptDrops">
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>사원 관리 시스템</string>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -1132,6 +1138,22 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actiondsa">
+   <property name="text">
+    <string>dsa</string>
+   </property>
+  </action>
+  <action name="actiondata_path_setting">
+   <property name="text">
+    <string>데이터 경로 설정</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>employee_number_textbox</tabstop>

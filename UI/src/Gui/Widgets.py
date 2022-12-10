@@ -62,3 +62,8 @@ class WidgetBox(Widget):
         for e in self.widgets:
             if isinstance(e, Textbox):
                 e.setEditable(flag)
+
+    def setText(self, text: str):
+        for e in self.widgets:
+            if isinstance(e, Textbox):
+                e.setText(text)

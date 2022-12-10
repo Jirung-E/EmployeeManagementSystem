@@ -5,11 +5,14 @@ class CSVData:
     def __init__(self):
         pass
 
+    def loadData(self, file_path):
+        CSV.loadData(file_path)
+
     def selectRow(self, index: int):
         CSV.selectRow(index)
 
-    def getItem(self, column: str):
-        return CSV.getItem(column)
+    def __getitem__(self, column_name: str):
+        return CSV.getItem(column_name)
 
-    def loadData(self, file_path):
-        CSV.loadData(file_path)
+    def numOfRows(self):
+        return 10

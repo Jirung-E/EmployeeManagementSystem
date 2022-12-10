@@ -20,3 +20,7 @@ class Window(ABC):
 class MainWindow(Window):
     def __init__(self, window):
         self.origin = window
+
+
+class SubWindow(Window):
+    pass

@@ -1,29 +1,16 @@
-import sys
-
-from PyQt5.QtWidgets import *
-
-
-class Main(QMainWindow):
+class Class:
     def __init__(self):
-        super().__init__()
-        self.isTrue = False
-        self.button = QPushButton("Button", self)
-        self.button.clicked.connect(self.hello)
+        self.funcs = {
+            1: self.f1,
+            2: self.f2
+        }
 
-    def hello(self):
+    def f1(self):
+        print("Hi")
+
+    def f2(self):
         print("Hello")
 
-    def show(self):
-        if self.isTrue is True:
-            print("True")
-        else:
-            print("False")
-        super().show()
-        
-        
 
-
-app = QApplication(sys.argv)
-window = Main()
-window.show()
-app.exec_()
+c = Class()
+c.funcs[1]()
