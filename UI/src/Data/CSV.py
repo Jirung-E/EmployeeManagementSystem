@@ -1,7 +1,9 @@
+from Data.Data import Data
+
 from Library.CLib import CSV
 
 
-class CSVData:
+class CSVData(Data):
     def __init__(self):
         pass
 
@@ -15,4 +17,4 @@ class CSVData:
         return CSV.getItem(column_name)
 
     def numOfRows(self):
-        return 10
+        return 3

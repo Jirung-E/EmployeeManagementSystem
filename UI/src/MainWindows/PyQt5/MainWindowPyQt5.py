@@ -22,7 +22,7 @@ from MainWindows.PyQt5.LoadWindow import *
 from Data.CSV import *
 
 data = CSVData()
-data.loadData("./data.csv")
+data.loadData("./data/data.csv")
 
 
 class EMSWidgetManager:
@@ -126,12 +126,20 @@ class EMS(MainWindow):
 
     def clickEditButton(self):
         if self.is_editable:
-            self.setEditable(False)
-            if self.index_of_current_data == 0:
-                self.buttons["edit"].setEnabled(False)
+            self.editCancel()
         else:
-            self.setEditable(True)
+            self.editStart()
+        
+    def editStart(self):
+        self.setEditable(True)
 
+    def editCancel(self):
+        self.setEditable(False)
+        if self.index_of_current_data == 0:
+            self.buttons["edit"].setEnabled(False)
+            self.widgets.clear()
+        else:
+            self.widgets.showData(data)
 
     def clickSaveButton(self):
         pass
@@ -140,6 +148,7 @@ class EMS(MainWindow):
         pass
 
     def clickAddButton(self):
+        self.widgets.clear()
         self.clickEditButton()
         self.buttons["edit"].setEnabled(True)
 
