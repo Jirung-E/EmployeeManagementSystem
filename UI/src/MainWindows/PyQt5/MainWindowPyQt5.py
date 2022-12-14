@@ -19,10 +19,9 @@ from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from MainWindows.PyQt5.LoadWindow import *
 
-from Data.CSV import *
+from Data.Table import DataTable
 
-data = CSVData()
-data.loadData("./data/data.csv")
+data_table = DataTable("./data/data.csv")
 
 
 class EMSWidgetManager:
@@ -69,7 +68,7 @@ class EMSWidgetManager:
         self.window.textboxes["duty"].setText(data["직책"])
         monthly_pay = sum(map(int, [ data["기본수당"], data["야간수당"], data["특수수당"] ]))
         self.window.textboxes["pay"].setText(str(monthly_pay))
-        self.window.textboxes["workplace"].setText(data["사업장"])
+        self.window.textboxes["workplace"].setText(data["근무지"])
         self.window.textboxes["start_date"].setText(data["입사일"])
         self.window.textboxes["end_date"].setText(data["퇴사일"])
 
@@ -85,7 +84,7 @@ class EMS(MainWindow):
         self.widgets.loadWidgets()
         self._bindFunctionsToButtons()
         self.is_editable: bool = False
-        self.index_of_current_data: int = 0
+        self.index_of_current_data: int = -1
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
 
@@ -111,16 +110,16 @@ class EMS(MainWindow):
             self.buttons["save"].setText("저장(&S)")
 
     def popLoadWindow(self):
-        sub = EMSLoadWindow(data)
+        sub = EMSLoadWindow(data_table)
         index, ok = sub.show()
         if ok:
             print(index)
             self.index_of_current_data = index
-            data.selectRow(self.index_of_current_data)
-            if index == 0:
+            if index == -1:
                 self.buttons["edit"].setEnabled(False)
                 self.widgets.clear()
             else:
+                data = data_table[self.index_of_current_data]
                 self.buttons["edit"].setEnabled(True)
                 self.widgets.showData(data)
 
@@ -135,11 +134,11 @@ class EMS(MainWindow):
 
     def editCancel(self):
         self.setEditable(False)
-        if self.index_of_current_data == 0:
+        if self.index_of_current_data == -1:
             self.buttons["edit"].setEnabled(False)
             self.widgets.clear()
         else:
-            self.widgets.showData(data)
+            self.widgets.showData(data_table)
 
     def clickSaveButton(self):
         pass

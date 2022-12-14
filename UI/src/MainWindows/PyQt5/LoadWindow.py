@@ -1,16 +1,16 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
-from Data.CSV import *
+from Data.Table import DataTable
+import json
 
-from MainWindows.PyQt5.SearchWindow import SearchWindow
-
-loadwindow = uic.loadUiType("./UI/loadwindow.ui")[0]
+loadwindow = uic.loadUiType("./UI/load_window.ui")[0]
 
 class EMSLoadWindow(QDialog, loadwindow):
     current_index = 0
 
-    def __init__(self, data: CSVData):
+    def __init__(self, data: DataTable):
         super().__init__()
         self.data = data
         self._initUI()
@@ -18,58 +18,72 @@ class EMSLoadWindow(QDialog, loadwindow):
 
     def _initUI(self):
         self.setupUi(self)
-        self.__setFilter()
-        self.__setEmployeeList()
+        self.__setUpEmployeeList()
+        self.__setUpFilters()
 
     def _bindFunctionsToButtons(self):
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
-        self.search_button.clicked.connect(self.__popSearchWindow)
+        self.search_button.clicked.connect(self.__showSearchResult)
 
     def show(self):
-        is_ok = super().exec_()
-        if is_ok:
-            EMSLoadWindow.current_index = self.employee_list_textbox.currentIndex()
-        return EMSLoadWindow.current_index, is_ok
+        ok = super().exec_()
+        if not ok:
+            value = -1
+        value = self.list_view.currentIndex().row()
+        return value, ok
 
-    def __popSearchWindow(self):
-        index, ok = SearchWindow(self.data).show()
-        if ok:
-            EMSLoadWindow.current_index = index
-            self.__update()
+    def __setUpEmployeeList(self):
+        employee_list_model = QStandardItemModel()
+        for i in range(0, self.data.getNumOfRecords()):
+            data = self.data[i]
+            item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]})'
+            employee_list_model.appendRow(QStandardItem(item))
+        self.list_view.setModel(employee_list_model)
 
-    def __setEmployeeList(self):
-        for i in range(0, self.data.numOfRows()):
-            self.data.selectRow(i)
-            item = f'[{self.data["사원번호"]}] {self.data["이름"]} ({self.data["사업장"]})'
-            self.employee_list_textbox.addItem(item)
-        self.data.selectRow(0)
-        self.__update()
-
-    def __setFilter(self):
+    def __setUpFilters(self):
         self.search_filter_1.activated.connect(self.__setFilter2)
+        self.search_filter_2.activated.connect(self.__showFilteredResult)
         self.search_filter_2.setEnabled(False)
+        self.__setUpFilter1()
+
+    def __setUpFilter1(self):
         self.search_filter_1.addItem("전체")
-        self.search_filter_1.addItem("근무지")
+        self.search_filter_1.addItem("사업장")
         self.search_filter_1.addItem("직책")
 
     def __setFilter2(self):
-        self.search_filter_2.activated.connect(self.__showFilteredResult)
         self.search_filter_2.clear()
         current_text = self.search_filter_1.currentText()
         if current_text == "전체":
             self.search_filter_2.setEnabled(False)
-        else:
-            self.search_filter_2.setEnabled(True)
-            if current_text == "근무지":
-                self.search_filter_2.addItem("PY TOWER")
-                self.search_filter_2.addItem("CS 상가")
-            elif current_text == "직책":
-                self.search_filter_2.addItem("경비원")
-                self.search_filter_2.addItem("미화원")
+            return
+        self.search_filter_2.setEnabled(True)
+        f = open("./data/" + current_text + ".json", encoding="utf-8")
+        items = json.load(f)
+        self.search_filter_2.addItems(items)
 
     def __showFilteredResult(self):
-        pass
+        employee_list_model = QStandardItemModel()
+        current_text = self.search_filter_2.currentText()
+        attribute = self.search_filter_1.currentText()
+        if attribute == "사업장":
+            attribute = "근무지"
+        for i in range(0, self.data.getNumOfRecords()):
+            data = self.data[i]
+            if current_text == data[attribute]:
+                item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]})'
+                employee_list_model.appendRow(QStandardItem(item))
+        self.list_view.setModel(employee_list_model)
 
-    def __update(self):
-        self.employee_list_textbox.setCurrentIndex(EMSLoadWindow.current_index)
+    def __showSearchResult(self):
+        text = self.search_textbox.text()
+        employee_list_model = QStandardItemModel()
+        for i in range(0, self.data.getNumOfRecords()):
+            data = self.data[i]
+            for e in data.data():
+                if e.find(text) != -1:
+                    item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]}) \t\t\t - ({e})'
+                    employee_list_model.appendRow(QStandardItem(item))
+                    break
+        self.list_view.setModel(employee_list_model)
