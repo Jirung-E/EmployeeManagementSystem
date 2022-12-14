@@ -21,8 +21,6 @@ from MainWindows.PyQt5.LoadWindow import *
 
 from Data.Table import DataTable
 
-data_table = DataTable("./data/data.csv")
-
 
 class EMSWidgetManager:
     def __init__(self, window: MainWindow):
@@ -84,7 +82,7 @@ class EMS(MainWindow):
         self.widgets.loadWidgets()
         self._bindFunctionsToButtons()
         self.is_editable: bool = False
-        self.index_of_current_data: int = -1
+        self.current_data: DataTable.Record = None
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
 
@@ -110,16 +108,14 @@ class EMS(MainWindow):
             self.buttons["save"].setText("저장(&S)")
 
     def popLoadWindow(self):
-        sub = EMSLoadWindow(data_table)
-        index, ok = sub.show()
+        sub = EMSLoadWindow()
+        data, ok = sub.show()
         if ok:
-            print(index)
-            self.index_of_current_data = index
-            if index == -1:
+            self.current_data = data
+            if data == None:
                 self.buttons["edit"].setEnabled(False)
                 self.widgets.clear()
             else:
-                data = data_table[self.index_of_current_data]
                 self.buttons["edit"].setEnabled(True)
                 self.widgets.showData(data)
 
@@ -134,11 +130,11 @@ class EMS(MainWindow):
 
     def editCancel(self):
         self.setEditable(False)
-        if self.index_of_current_data == -1:
+        if self.current_data == None:
             self.buttons["edit"].setEnabled(False)
             self.widgets.clear()
         else:
-            self.widgets.showData(data_table)
+            self.widgets.showData(self.current_data)
 
     def clickSaveButton(self):
         pass

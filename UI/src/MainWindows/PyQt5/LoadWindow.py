@@ -8,11 +8,9 @@ import json
 loadwindow = uic.loadUiType("./UI/load_window.ui")[0]
 
 class EMSLoadWindow(QDialog, loadwindow):
-    current_index = 0
-
-    def __init__(self, data: DataTable):
+    def __init__(self):
         super().__init__()
-        self.data = data
+        self.data = DataTable("./data/data.csv")
         self._initUI()
         self._bindFunctionsToButtons()
 
@@ -28,10 +26,17 @@ class EMSLoadWindow(QDialog, loadwindow):
 
     def show(self):
         ok = super().exec_()
-        if not ok:
-            value = -1
-        value = self.list_view.currentIndex().row()
-        return value, ok
+        data = None
+        if ok:
+            index = self.list_view.currentIndex()
+            print(index)
+            key = self.list_view.model().itemFromIndex(index).text()[1:9]
+            print(key)
+            for i in range(0, self.data.getNumOfRecords()):
+                if self.data[i]["사원번호"] == key:
+                    data = self.data[i]
+                    break
+        return data, ok
 
     def __setUpEmployeeList(self):
         employee_list_model = QStandardItemModel()
@@ -78,6 +83,8 @@ class EMSLoadWindow(QDialog, loadwindow):
 
     def __showSearchResult(self):
         text = self.search_textbox.text()
+        if text == "":
+            return
         employee_list_model = QStandardItemModel()
         for i in range(0, self.data.getNumOfRecords()):
             data = self.data[i]
