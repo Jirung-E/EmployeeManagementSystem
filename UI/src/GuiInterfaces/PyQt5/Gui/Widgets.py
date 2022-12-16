@@ -51,8 +51,11 @@ class QtTextbox(Gui.Widgets.Textbox, QtWidget):
 
 
 class QtLineEdit(QtTextbox):
-    def __init__(self, window: QMainWindow, name: str):
-        super().__init__(window.findChild(QLineEdit, name))
+    def __init__(self, window: QWidget, name: str):
+        if window.findChild(QLineEdit, name) == None:
+            super().__init__(QLineEdit())
+        else:
+            super().__init__(window.findChild(QLineEdit, name))
 
     def setText(self, text: str):
         self.origin.setText(text)
