@@ -5,49 +5,59 @@ from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from Data.Table import DataTable
 import json
 
+from typing import List
+
 loadwindow = uic.loadUiType("./UI/load_window.ui")[0]
+
+class ListViewer:
+    def __init__(self, origin: QListView):
+        self.__origin = origin
+
+    def show(self, data: List[DataTable.Record]):
+        model = QStandardItemModel()
+        for e in data:
+            item = f'[{e["사원번호"]}] {e["이름"]} ({e["근무지"]} {e["직책"]})'
+            model.appendRow(QStandardItem(item))
+        self.__origin.setModel(model)
 
 class EMSLoadWindow(QDialog, loadwindow):
     def __init__(self):
         super().__init__()
-        self.data = DataTable("./data/data.csv")
+        self.__data = DataTable("./data/직원정보.csv")
         self._initUI()
         self._bindFunctionsToButtons()
+        self.__viewer = ListViewer(self.list_view)
+        self.__updateViewer()
 
     def _initUI(self):
         self.setupUi(self)
-        self.__setUpEmployeeList()
         self.__setUpFilters()
+        self.__setUpOrderByList()
+        self.__setUpEmployeeList()
 
     def _bindFunctionsToButtons(self):
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
         self.search_button.clicked.connect(self.__showSearchResult)
+        self.sort_rule_button.clicked.connect(self.__changeSortRule)
 
     def show(self):
         ok = super().exec_()
         data = None
         if ok:
             index = self.list_view.currentIndex()
-            print(index)
-            key = self.list_view.model().itemFromIndex(index).text()[1:9]
-            print(key)
-            for i in range(0, self.data.getNumOfRecords()):
-                if self.data[i]["사원번호"] == key:
-                    data = self.data[i]
-                    break
+            if index.row() != -1:
+                key = self.list_view.model().itemFromIndex(index).text()[1:9]
+                data = self.__data.getRecordByKey(key)
         return data, ok
 
     def __setUpEmployeeList(self):
-        employee_list_model = QStandardItemModel()
-        for i in range(0, self.data.getNumOfRecords()):
-            data = self.data[i]
-            item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]})'
-            employee_list_model.appendRow(QStandardItem(item))
-        self.list_view.setModel(employee_list_model)
+        self.__employee_list: List[DataTable.Record] = []
+        for e in self.__data:
+            self.__employee_list.append(e)
 
     def __setUpFilters(self):
-        self.search_filter_1.activated.connect(self.__setFilter2)
+        self.search_filter_1.activated.connect(self.__updateFilter1)
         self.search_filter_2.activated.connect(self.__showFilteredResult)
         self.search_filter_2.setEnabled(False)
         self.__setUpFilter1()
@@ -57,40 +67,79 @@ class EMSLoadWindow(QDialog, loadwindow):
         self.search_filter_1.addItem("사업장")
         self.search_filter_1.addItem("직책")
 
-    def __setFilter2(self):
-        self.search_filter_2.clear()
-        current_text = self.search_filter_1.currentText()
-        if current_text == "전체":
+    def __updateFilter1(self):
+        current_filter = self.search_filter_1.currentText()
+        self.search_textbox.clear()
+        if current_filter == "전체":
+            self.__setUpEmployeeList()
+            self.__updateViewer()
             self.search_filter_2.setEnabled(False)
             return
+        self.__setFilter2(current_filter)
+        self.__showFilteredResult()
+
+    def __setFilter2(self, filter: str):
+        self.search_filter_2.clear()
         self.search_filter_2.setEnabled(True)
-        f = open("./data/" + current_text + ".json", encoding="utf-8")
+        f = open("./data/" + filter + ".json", encoding="utf-8")
         items = json.load(f)
         self.search_filter_2.addItems(items)
 
     def __showFilteredResult(self):
-        employee_list_model = QStandardItemModel()
+        self.search_textbox.clear()
         current_text = self.search_filter_2.currentText()
         attribute = self.search_filter_1.currentText()
         if attribute == "사업장":
             attribute = "근무지"
-        for i in range(0, self.data.getNumOfRecords()):
-            data = self.data[i]
-            if current_text == data[attribute]:
-                item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]})'
-                employee_list_model.appendRow(QStandardItem(item))
-        self.list_view.setModel(employee_list_model)
+        self.__employee_list.clear()
+        for e in self.__data:
+            if e[attribute] == current_text:
+                self.__employee_list.append(e)
+        self.__updateViewer()
 
     def __showSearchResult(self):
         text = self.search_textbox.text()
         if text == "":
+            self.__setUpEmployeeList()
             return
-        employee_list_model = QStandardItemModel()
-        for i in range(0, self.data.getNumOfRecords()):
-            data = self.data[i]
-            for e in data.data():
-                if e.find(text) != -1:
-                    item = f'[{data["사원번호"]}] {data["이름"]} ({data["근무지"]}) \t\t\t - ({e})'
-                    employee_list_model.appendRow(QStandardItem(item))
+        employee_list = list(self.__employee_list)
+        self.__employee_list = []
+        for e in employee_list:
+            for d in e.data():
+                if d.find(text) != -1:
+                    self.__employee_list.append(e)
                     break
-        self.list_view.setModel(employee_list_model)
+        self.__updateViewer()
+        self.__employee_list = employee_list
+
+    def __setUpOrderByList(self):
+        self.order_by_textbox.addItems(["사원번호", "이름", "입사일", "퇴사일"])
+        self.order_by_textbox.activated.connect(self.__updateOrderByTextbox)
+        self.__sort_ascending = True
+
+    def __updateOrderByTextbox(self):
+        self.__updateViewer()
+
+    def __changeSortRule(self):
+        self.__sort_ascending = not self.__sort_ascending
+        if self.__sort_ascending:
+            self.sort_rule_button.setText("오름차순")
+        else:
+            self.sort_rule_button.setText("내림차순")
+        self.__updateViewer()
+
+    def __sort(self):
+        self.__orderBy(self.order_by_textbox.currentText())
+
+    def __orderBy(self, key: str):
+        self.__employee_list = sorted(self.__employee_list, key=lambda x: x[key], reverse=not self.__sort_ascending)
+
+    def __updateViewer(self):
+        self.__sort()
+        self.__viewer.show(self.__employee_list)
+
+    def __getListToBeShown(self):
+        if self.__triggered(self.search_filter_2):
+            return self.__getFilteredList()
+        elif self.__triggered(self.search_button):
+            return self.__getSearchResultList()

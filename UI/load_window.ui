@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>697</width>
-    <height>445</height>
+    <width>700</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="font">
@@ -72,6 +72,35 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>정렬</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="order_by_textbox"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sort_rule_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>오름차순</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -107,6 +136,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>결과 내 검색</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="search_textbox">
@@ -174,6 +210,9 @@
          <property name="text">
           <string>검색</string>
          </property>
+         <property name="shortcut">
+          <string>Return</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -230,13 +269,13 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>24</height>
+           <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>24</height>
+           <height>16777215</height>
           </size>
          </property>
          <property name="font">
@@ -261,6 +300,8 @@
   <tabstop>search_filter_2</tabstop>
   <tabstop>search_textbox</tabstop>
   <tabstop>search_button</tabstop>
+  <tabstop>order_by_textbox</tabstop>
+  <tabstop>sort_rule_button</tabstop>
   <tabstop>list_view</tabstop>
   <tabstop>cancel_button</tabstop>
   <tabstop>ok_button</tabstop>

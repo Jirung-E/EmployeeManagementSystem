@@ -13,6 +13,7 @@ class DataTable(Data):
             for i in range(0, len(self.__data[0])):
                 self.__attributes[self.__data[0][i]] = i
             self.__data.pop(0)
+            self.__primary_key = list(self.__attributes.keys())[0]
             origin_file.close()
 
     class Record(Data):
@@ -39,8 +40,11 @@ class DataTable(Data):
             field.append(e[self.__attributes[attribute]])
         return field
 
-    def getRecord(self, index: int):
-        return self.__data[index]
+    def getRecordByKey(self, key: str):
+        for e in self:
+            if e[self.__primary_key] == key:
+                return e
+        return None
 
     def __getitem__(self, index: int):
         return DataTable.Record(self.__attributes, self.__data[index])
@@ -51,12 +55,24 @@ class DataTable(Data):
     def getNumOfRecords(self):
         return len(self.__data)
 
-
 if __name__ == "__main__":
     data = DataTable("./data/data.csv")
-    print(data.getAttributes())
-    print(data.getField("주민번호"))
-    print(data.getRecord(1))
-    print(data[1].data())
-    print(data[1]["이름"])
+    # print(data.getAttributes())
+    # print(data.getField("주민번호"))
+    # print(data[1].data())
+    # print(data[1]["이름"])
+    # print(data.getRecordByKey("2022-103").data())
+
+    # target = { e["사원번호"]: e["이름"] for e in data }
+    # print(target)
+    # target = sorted(target.items(), key=lambda x: x[1])
+    # print(target)
+
+    for e in data:
+        print(e.data())
+    result = sorted(data, key=lambda x: x["이름"])
+    for e in result:
+        print(e.data())
+    # for e in sorted(data, key=lambda x: x["이름"]):
+    #     print(data.getRecordByKey(e).data())
     data.save()

@@ -18,6 +18,7 @@ class MainForm(QMainWindow, mainwindow):
 from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from MainWindows.PyQt5.LoadWindow import *
+from MainWindows.PyQt5.PayWindow import *
 
 from Data.Table import DataTable
 
@@ -51,7 +52,9 @@ class EMSWidgetManager:
             "save": QtButton(self.window.origin, "save_button"),
             "save_tool": QtButton(self.window.origin, "save_tool_button"),
             "add": QtButton(self.window.origin, "add_button"),
-            "load": QtButton(self.window.origin, "load_button")
+            "load": QtButton(self.window.origin, "load_button"),
+            "about_pay": QtButton(self.window.origin, "view_more_about_pay_button"),
+            "about_workdate": QtButton(self.window.origin, "view_more_about_workdate_button")
         }
 
     def showData(self, data):
@@ -64,8 +67,7 @@ class EMSWidgetManager:
         self.window.textboxes["bank"][0].setText(bank_account[0])
         self.window.textboxes["bank"][1].setText(bank_account[1])
         self.window.textboxes["duty"].setText(data["직책"])
-        monthly_pay = sum(map(int, [ data["기본수당"], data["야간수당"], data["특수수당"] ]))
-        self.window.textboxes["pay"].setText(str(monthly_pay))
+        self.window.textboxes["pay"].setText(data["월급여"])
         self.window.textboxes["workplace"].setText(data["근무지"])
         self.window.textboxes["start_date"].setText(data["입사일"])
         self.window.textboxes["end_date"].setText(data["퇴사일"])
@@ -92,13 +94,15 @@ class EMS(MainWindow):
         self.buttons["save_tool"].bindFunction(self.clickSaveToolButton)
         self.buttons["add"].bindFunction(self.clickAddButton)
         self.buttons["load"].bindFunction(self.clickLoadButton)
+        self.buttons["about_pay"].bindFunction(self.clickViewMoreAboutPayButton)
+        self.buttons["about_workdate"].bindFunction(self.clickViewMoreAboutWorkdateButton)
 
     def setEditable(self, flag: bool):
         self.is_editable = flag
         for e in self.textboxes.values():
             e.setEditable(flag)
-        self.buttons["load"].setEnabled(not flag)
-        self.buttons["add"].setEnabled(not flag)
+        self.buttons["load"].setHidden(flag)
+        self.buttons["add"].setHidden(flag)
         self.buttons["save_tool"].setHidden(flag)
         if flag is True:
             self.buttons["edit"].setText("취소")
@@ -149,3 +153,17 @@ class EMS(MainWindow):
 
     def clickLoadButton(self):
         self.popLoadWindow()
+
+    def clickViewMoreAboutPayButton(self):
+        print("click view more about pay button")
+        if self.current_data == None:
+            key = None
+        else:
+            key = self.current_data["사원번호"]
+        sub = EMSPayWindow(key, self.is_editable)
+        total_pay, ok = sub.show()
+        if ok:
+            self.textboxes["pay"].setText(total_pay)
+
+    def clickViewMoreAboutWorkdateButton(self):
+        print("click view more about workdate button")
