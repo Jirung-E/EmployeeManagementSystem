@@ -427,7 +427,7 @@
              <bool>false</bool>
             </property>
             <property name="placeholderText">
-             <string>010-1234-5678</string>
+             <string>010-0000-0000</string>
             </property>
            </widget>
           </item>
@@ -704,7 +704,7 @@
              <bool>false</bool>
             </property>
             <property name="placeholderText">
-             <string>2000000</string>
+             <string>0</string>
             </property>
            </widget>
           </item>

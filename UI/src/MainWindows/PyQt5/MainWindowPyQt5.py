@@ -67,7 +67,7 @@ class EMSWidgetManager:
         self.window.textboxes["bank"][0].setText(bank_account[0])
         self.window.textboxes["bank"][1].setText(bank_account[1])
         self.window.textboxes["duty"].setText(data["직책"])
-        self.window.textboxes["pay"].setText(data["월급여"])
+        self.window.textboxes["pay"].setText(data["급여"])
         self.window.textboxes["workplace"].setText(data["근무지"])
         self.window.textboxes["start_date"].setText(data["입사일"])
         self.window.textboxes["end_date"].setText(data["퇴사일"])
@@ -101,6 +101,7 @@ class EMS(MainWindow):
         self.is_editable = flag
         for e in self.textboxes.values():
             e.setEditable(flag)
+        self.textboxes["pay"].setEditable(False)
         self.buttons["load"].setHidden(flag)
         self.buttons["add"].setHidden(flag)
         self.buttons["save_tool"].setHidden(flag)
@@ -162,7 +163,7 @@ class EMS(MainWindow):
             key = self.current_data["사원번호"]
         sub = EMSPayWindow(key, self.is_editable)
         total_pay, ok = sub.show()
-        if ok:
+        if ok and self.is_editable:
             self.textboxes["pay"].setText(total_pay)
 
     def clickViewMoreAboutWorkdateButton(self):
