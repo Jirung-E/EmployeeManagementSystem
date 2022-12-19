@@ -6,12 +6,12 @@ from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from typing import Dict
 
-from Data.Table import DataTable
+from Data.Table import Table
 
 pay_window = uic.loadUiType("./UI/pay_window.ui")[0]
 
 class EMSPayWindow(QDialog, pay_window):
-    __data = DataTable("./data/급여.csv")
+    __data = Table("./data/급여.csv")
 
     def __init__(self, employee_number: str, is_editable: bool):
         super().__init__()

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
-from Data.Table import DataTable
+from Data.Table import Table
 import json
 
 from typing import List
@@ -13,7 +13,7 @@ class ListViewer:
     def __init__(self, origin: QListView):
         self.__origin = origin
 
-    def show(self, data: List[DataTable.Record]):
+    def show(self, data: List[Table.Record]):
         model = QStandardItemModel()
         for e in data:
             item = f'[{e["사원번호"]}] {e["이름"]} ({e["근무지"]} {e["직책"]})'
@@ -21,7 +21,7 @@ class ListViewer:
         self.__origin.setModel(model)
 
 class EMSLoadWindow(QDialog, loadwindow):
-    def __init__(self, data: DataTable):
+    def __init__(self, data: Table):
         super().__init__()
         self.__data = data
         self._initUI()
@@ -52,7 +52,7 @@ class EMSLoadWindow(QDialog, loadwindow):
         return data, ok
 
     def __setUpEmployeeList(self):
-        self.__employee_list: List[DataTable.Record] = []
+        self.__employee_list: List[Table.Record] = []
         for e in self.__data:
             self.__employee_list.append(e)
 

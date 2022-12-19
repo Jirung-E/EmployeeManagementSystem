@@ -3,7 +3,7 @@ from Data.Data import Data
 import csv
 
 
-class DataTable(Data):
+class Table(Data):
     def __init__(self, origin_source: str = None):
         self.__origin_source = origin_source
         self.__attributes = {}   # column_name
@@ -50,7 +50,7 @@ class DataTable(Data):
         return None
 
     def __getitem__(self, index: int):
-        return DataTable.Record(self.__attributes, self.__data[index])
+        return Table.Record(self.__attributes, self.__data[index])
 
     def getAttributes(self):
         return list(self.__attributes.keys())
@@ -59,7 +59,7 @@ class DataTable(Data):
         return len(self.__data)
 
 if __name__ == "__main__":
-    data = DataTable("./data/data.csv")
+    data = Table("./data/data.csv")
     # print(data.getAttributes())
     # print(data.getField("주민번호"))
     # print(data[1].data())

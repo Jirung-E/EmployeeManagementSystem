@@ -17,12 +17,12 @@ class MainForm(QMainWindow, mainwindow):
 
 from GuiInterfaces.PyQt5.Gui.Widgets import *
 
-from MainWindows.PyQt5.LoadWindow import *
-from MainWindows.PyQt5.PayWindow import *
-from MainWindows.PyQt5.DutyChangeWindow import *
-from MainWindows.PyQt5.WorkplaceChangeWindow import *
+from Windows.LoadWindow import *
+from Windows.PayWindow import *
+from Windows.DutyChangeWindow import *
+from Windows.WorkplaceChangeWindow import *
 
-from Data.Table import DataTable
+from Data.Table import Table
 
 
 class EMSWidgetManager:
@@ -88,8 +88,8 @@ class EMS(MainWindow):
         self.widgets.loadWidgets()
         self._bindFunctionsToButtons()
         self.is_editable: bool = False
-        self.data = DataTable("./data/직원정보.csv")
-        self.current_data: DataTable.Record = None
+        self.data = Table("./data/직원정보.csv")
+        self.current_data: Table.Record = None
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
 
