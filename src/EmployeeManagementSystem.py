@@ -1,10 +1,8 @@
 from GuiController.GuiController import GuiController
 from Gui.Windows import MainWindow
 from GuiInterfaces.PyQt5.PyQt5Interface import *
-from GuiInterfaces.Tkinter.TkinterInterface import *
 
-from MainWindows.PyQt5.MainWindowPyQt5 import EMS
-# from MainWindows.MainWindowTkinter import EMS
+from Windows.MainWindow import EMS
 
 
 def main():
@@ -12,7 +10,6 @@ def main():
     window: MainWindow
     
     gui_interface = PyQt5Interface()
-    # gui_interface = TkinterInterface()
     window = EMS()
 
     GuiController(gui_interface).run(window)
