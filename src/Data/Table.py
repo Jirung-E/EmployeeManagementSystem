@@ -1,4 +1,4 @@
-from Data.Data import Data
+from Data import Data
 
 import csv
 
@@ -59,7 +59,7 @@ class Table(Data):
         return len(self.__data)
 
 if __name__ == "__main__":
-    data = Table("./data/data.csv")
+    data = Table("./data/직원정보.csv")
     # print(data.getAttributes())
     # print(data.getField("주민번호"))
     # print(data[1].data())

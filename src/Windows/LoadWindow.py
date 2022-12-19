@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
-from Data.Table import Table
-import json
+from Data import Table
+from Data import List as ListData
 
 from typing import List
 
@@ -81,8 +81,7 @@ class EMSLoadWindow(QDialog, loadwindow):
     def __setFilter2(self, filter: str):
         self.search_filter_2.clear()
         self.search_filter_2.setEnabled(True)
-        f = open("./data/" + filter + ".json", encoding="utf-8")
-        items = json.load(f)
+        items = ListData("./data/" + filter + ".json").data()
         self.search_filter_2.addItems(items)
 
     def __showFilteredResult(self):

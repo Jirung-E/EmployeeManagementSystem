@@ -3,7 +3,7 @@ from PyQt5 import uic
 
 from GuiInterfaces.PyQt5.Gui.Widgets import *
 
-import json
+from Data import List
 
 duty_change_window = uic.loadUiType("./UI/duty_change_window.ui")[0]
 
@@ -16,8 +16,7 @@ class EMSDutyChangeWindow(QDialog, duty_change_window):
 
     def _initUI(self):
         self.setupUi(self)
-        f = open("./data/직책.json", encoding="utf-8")
-        items = json.load(f)
+        items = List("./data/직책.json").data()
         self.duty_select_textbox.addItems(items)
         if self.__current_data != None:
             self.duty_select_textbox.setCurrentText(self.__current_data)

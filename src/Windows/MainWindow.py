@@ -22,7 +22,7 @@ from Windows.PayWindow import *
 from Windows.DutyChangeWindow import *
 from Windows.WorkplaceChangeWindow import *
 
-from Data.Table import Table
+from Data import Table
 
 
 class EMSWidgetManager:
