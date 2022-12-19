@@ -211,7 +211,7 @@
           <string>검색</string>
          </property>
          <property name="shortcut">
-          <string>Return</string>
+          <string>Ctrl+S</string>
          </property>
         </widget>
        </item>

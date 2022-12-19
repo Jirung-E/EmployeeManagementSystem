@@ -21,9 +21,9 @@ class ListViewer:
         self.__origin.setModel(model)
 
 class EMSLoadWindow(QDialog, loadwindow):
-    def __init__(self):
+    def __init__(self, data: DataTable):
         super().__init__()
-        self.__data = DataTable("./data/직원정보.csv")
+        self.__data = data
         self._initUI()
         self._bindFunctionsToButtons()
         self.__viewer = ListViewer(self.list_view)

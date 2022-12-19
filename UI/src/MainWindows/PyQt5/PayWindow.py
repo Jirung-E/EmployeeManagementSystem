@@ -5,7 +5,6 @@ from PyQt5.QtGui import QIntValidator
 from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from typing import Dict
-from typing import List
 
 from Data.Table import DataTable
 
@@ -43,6 +42,14 @@ class EMSPayWindow(QDialog, pay_window):
     def _bindFunctionsToButtons(self):
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
+
+    def accept(self):
+        super().accept()
+        if self.__current_data == None:
+            return
+        for e in self.textboxes.items():
+            self.__current_data[e[0]] = e[1].getCurrentText()
+        self.__data.save()
 
     def show(self):
         ok = super().exec_()

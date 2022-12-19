@@ -346,7 +346,7 @@
              <bool>false</bool>
             </property>
             <property name="placeholderText">
-             <string>121212-1234567</string>
+             <string>000000-0000000</string>
             </property>
            </widget>
           </item>
@@ -561,6 +561,106 @@
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="Layout_5">
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>급여</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="pay_textbox">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="accessibleName">
+             <string/>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="inputMask">
+             <string/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="view_more_about_pay_button">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="Layout_4">
           <item>
            <widget class="QLabel" name="label_11">
@@ -629,107 +729,20 @@
              <bool>false</bool>
             </property>
             <property name="placeholderText">
-             <string>경비원</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="Layout_5">
-          <item>
-           <widget class="QLabel" name="label_12">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>80</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>수당</string>
+             <string>-</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="pay_textbox">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="accessibleName">
-             <string/>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="inputMask">
-             <string/>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="frame">
-             <bool>true</bool>
-            </property>
-            <property name="readOnly">
-             <bool>false</bool>
-            </property>
-            <property name="placeholderText">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="view_more_about_pay_button">
-            <property name="minimumSize">
-             <size>
-              <width>50</width>
-              <height>0</height>
-             </size>
-            </property>
+           <widget class="QPushButton" name="duty_change_button">
             <property name="maximumSize">
              <size>
               <width>50</width>
               <height>16777215</height>
              </size>
             </property>
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
             <property name="text">
-             <string>...</string>
+             <string>변경</string>
             </property>
            </widget>
           </item>
@@ -804,7 +817,20 @@
              <bool>false</bool>
             </property>
             <property name="placeholderText">
-             <string>본사</string>
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="workplace_change_button">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>변경</string>
             </property>
            </widget>
           </item>
@@ -1207,13 +1233,18 @@
   <tabstop>phone_number_textbox</tabstop>
   <tabstop>bank_textbox_1</tabstop>
   <tabstop>bank_textbox_2</tabstop>
-  <tabstop>duty_textbox</tabstop>
   <tabstop>pay_textbox</tabstop>
+  <tabstop>duty_textbox</tabstop>
   <tabstop>workplace_textbox</tabstop>
   <tabstop>startdate_textbox</tabstop>
   <tabstop>enddate_textbox</tabstop>
   <tabstop>view_more_about_pay_button</tabstop>
+  <tabstop>duty_change_button</tabstop>
+  <tabstop>workplace_change_button</tabstop>
   <tabstop>view_more_about_workdate_button</tabstop>
+  <tabstop>load_button</tabstop>
+  <tabstop>edit_button</tabstop>
+  <tabstop>add_button</tabstop>
   <tabstop>save_button</tabstop>
   <tabstop>save_tool_button</tabstop>
  </tabstops>

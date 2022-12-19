@@ -59,6 +59,9 @@ class QtLineEdit(QtTextbox):
 
     def setText(self, text: str):
         self.origin.setText(text)
+
+    def getCurrentText(self):
+        return self.origin.text()
         
     def setEditable(self, flag: bool):
         self.origin.setReadOnly(not flag)
@@ -75,6 +78,9 @@ class QtCombobox(QtTextbox):
 
     def setText(self, text: str):
         self.origin.setCurrentText(text)
+
+    def getCurrentText(self):
+        return self.origin.currentText()
 
     def setEditable(self, flag: bool):
         self.setEnabled(not flag)

@@ -19,6 +19,8 @@ from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from MainWindows.PyQt5.LoadWindow import *
 from MainWindows.PyQt5.PayWindow import *
+from MainWindows.PyQt5.DutyChangeWindow import *
+from MainWindows.PyQt5.WorkplaceChangeWindow import *
 
 from Data.Table import DataTable
 
@@ -54,7 +56,9 @@ class EMSWidgetManager:
             "add": QtButton(self.window.origin, "add_button"),
             "load": QtButton(self.window.origin, "load_button"),
             "about_pay": QtButton(self.window.origin, "view_more_about_pay_button"),
-            "about_workdate": QtButton(self.window.origin, "view_more_about_workdate_button")
+            "about_workdate": QtButton(self.window.origin, "view_more_about_workdate_button"),
+            "duty_change": QtButton(self.window.origin, "duty_change_button"),
+            "workplace_change": QtButton(self.window.origin, "workplace_change_button"),
         }
 
     def showData(self, data):
@@ -84,6 +88,7 @@ class EMS(MainWindow):
         self.widgets.loadWidgets()
         self._bindFunctionsToButtons()
         self.is_editable: bool = False
+        self.data = DataTable("./data/직원정보.csv")
         self.current_data: DataTable.Record = None
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
@@ -96,12 +101,24 @@ class EMS(MainWindow):
         self.buttons["load"].bindFunction(self.clickLoadButton)
         self.buttons["about_pay"].bindFunction(self.clickViewMoreAboutPayButton)
         self.buttons["about_workdate"].bindFunction(self.clickViewMoreAboutWorkdateButton)
+        self.buttons["duty_change"].bindFunction(self.clickDutyChangeButton)
+        self.buttons["workplace_change"].bindFunction(self.clickWorkplaceChangeButton)
 
     def setEditable(self, flag: bool):
         self.is_editable = flag
+        self.setTextboxesEditable(flag)
+        self.setButtonsEditable(flag)
+
+    def setTextboxesEditable(self, flag: bool):
         for e in self.textboxes.values():
             e.setEditable(flag)
         self.textboxes["pay"].setEditable(False)
+        self.textboxes["duty"].setEditable(False)
+        self.textboxes["workplace"].setEditable(False)
+
+    def setButtonsEditable(self, flag: bool):
+        self.buttons["duty_change"].setEnabled(flag)
+        self.buttons["workplace_change"].setEnabled(flag)
         self.buttons["load"].setHidden(flag)
         self.buttons["add"].setHidden(flag)
         self.buttons["save_tool"].setHidden(flag)
@@ -113,7 +130,7 @@ class EMS(MainWindow):
             self.buttons["save"].setText("저장(&S)")
 
     def popLoadWindow(self):
-        sub = EMSLoadWindow()
+        sub = EMSLoadWindow(self.data)
         data, ok = sub.show()
         if ok:
             self.current_data = data
@@ -141,14 +158,33 @@ class EMS(MainWindow):
         else:
             self.widgets.showData(self.current_data)
 
+    def editDone(self):
+        self.setEditable(False)
+        self.current_data["사원번호"] = self.textboxes["employee_number"].getCurrentText()
+        self.current_data["이름"] = self.textboxes["name"].getCurrentText()
+        self.current_data["주소"] = self.textboxes["address"].getCurrentText()
+        self.current_data["주민번호"] = self.textboxes["rrn"].getCurrentText()
+        self.current_data["전화번호"] = self.textboxes["phone_number"].getCurrentText()
+        self.current_data["계좌"] = self.textboxes["bank"][0].getCurrentText() + " " + self.textboxes["bank"][1].getCurrentText()
+        self.current_data["급여"] = self.textboxes["pay"].getCurrentText()
+        self.current_data["직책"] = self.textboxes["duty"].getCurrentText()
+        self.current_data["근무지"] = self.textboxes["workplace"].getCurrentText()
+        self.current_data["입사일"] = self.textboxes["start_date"].getCurrentText()
+        self.current_data["퇴사일"] = self.textboxes["end_date"].getCurrentText()
+
     def clickSaveButton(self):
-        pass
+        if self.is_editable:
+            self.editDone()
+        else:
+            self.data.save()
 
     def clickSaveToolButton(self):
-        pass
+        print("click save tool button")
 
     def clickAddButton(self):
         self.widgets.clear()
+        # 사원번호 자동 설정
+        # 입사일 오늘로 설정
         self.clickEditButton()
         self.buttons["edit"].setEnabled(True)
 
@@ -156,7 +192,6 @@ class EMS(MainWindow):
         self.popLoadWindow()
 
     def clickViewMoreAboutPayButton(self):
-        print("click view more about pay button")
         if self.current_data == None:
             key = None
         else:
@@ -168,3 +203,15 @@ class EMS(MainWindow):
 
     def clickViewMoreAboutWorkdateButton(self):
         print("click view more about workdate button")
+
+    def clickDutyChangeButton(self):
+        sub = EMSDutyChangeWindow(self.textboxes["duty"].origin.text())
+        duty, ok = sub.show()
+        if ok:
+            self.textboxes["duty"].setText(duty)
+
+    def clickWorkplaceChangeButton(self):
+        sub = EMSWorkplaceChangeWindow(self.textboxes["workplace"].origin.text())
+        duty, ok = sub.show()
+        if ok:
+            self.textboxes["workplace"].setText(duty)

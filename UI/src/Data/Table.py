@@ -27,6 +27,9 @@ class DataTable(Data):
         def __getitem__(self, attribute: str):
             return self.__data[self.__attributes[attribute]]
 
+        def __setitem__(self, attribute: str, value):
+            self.__data[self.__attributes[attribute]] = value
+
     def save(self):
         origin_file = open(self.__origin_source, 'w', encoding="utf-8", newline='')
         writer = csv.writer(origin_file)

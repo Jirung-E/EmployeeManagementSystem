@@ -39,6 +39,10 @@ class Textbox(Widget):
     def setText(self, text: str):
         pass
 
+    @abstractmethod
+    def getCurrentText(self, text: str):
+        pass
+
     def setColor(self, color):
         pass
 
