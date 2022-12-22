@@ -10,6 +10,7 @@ def main():
     window: MainWindow
     
     gui_interface = PyQt5Interface()
+
     window = EMS()
 
     GuiController(gui_interface).run(window)

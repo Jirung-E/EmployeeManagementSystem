@@ -67,9 +67,10 @@ class EMSWidgetManager:
         self.window.textboxes["address"].setText(data["주소"])
         self.window.textboxes["rrn"].setText(data["주민번호"])
         self.window.textboxes["phone_number"].setText(data["전화번호"])
-        bank_account = data["계좌"].split(' ')
-        self.window.textboxes["bank"][0].setText(bank_account[0])
-        self.window.textboxes["bank"][1].setText(bank_account[1])
+        if data["계좌"] != "":
+            bank_account = data["계좌"].split(' ')
+            self.window.textboxes["bank"][0].setText(bank_account[0])
+            self.window.textboxes["bank"][1].setText(bank_account[1])
         self.window.textboxes["duty"].setText(data["직책"])
         self.window.textboxes["pay"].setText(data["급여"])
         self.window.textboxes["workplace"].setText(data["근무지"])
@@ -88,7 +89,7 @@ class EMS(MainWindow):
         self.widgets.loadWidgets()
         self._bindFunctionsToButtons()
         self.is_editable: bool = False
-        self.data = Table("./data/직원정보.csv")
+        self.data = Table("./testData/직원정보.csv")
         self.current_data: Table.Record = None
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)

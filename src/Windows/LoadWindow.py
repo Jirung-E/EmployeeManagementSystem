@@ -6,6 +6,7 @@ from Data import Table
 from Data import List as ListData
 
 from typing import List
+from typing import Dict
 
 loadwindow = uic.loadUiType("./UI/load_window.ui")[0]
 
@@ -27,6 +28,7 @@ class EMSLoadWindow(QDialog, loadwindow):
         self._initUI()
         self._bindFunctionsToButtons()
         self.__viewer = ListViewer(self.list_view)
+        self.list_view.doubleClicked.connect(self.accept)
         self.__updateViewer()
 
     def _initUI(self):
@@ -81,7 +83,7 @@ class EMSLoadWindow(QDialog, loadwindow):
     def __setFilter2(self, filter: str):
         self.search_filter_2.clear()
         self.search_filter_2.setEnabled(True)
-        items = ListData("./data/" + filter + ".json").data()
+        items = ListData("./testData/" + filter + ".json").data()
         self.search_filter_2.addItems(items)
 
     def __showFilteredResult(self):
@@ -131,7 +133,14 @@ class EMSLoadWindow(QDialog, loadwindow):
         self.__orderBy(self.order_by_textbox.currentText())
 
     def __orderBy(self, key: str):
+        if key == "사원번호":
+            self.__orderByEmployeeNumber()
+            return
         self.__employee_list = sorted(self.__employee_list, key=lambda x: x[key], reverse=not self.__sort_ascending)
+
+    def __orderByEmployeeNumber(self):
+        self.__employee_list = sorted(self.__employee_list, key=lambda x: int(x["사원번호"][5:8]), reverse=not self.__sort_ascending)
+        self.__employee_list = sorted(self.__employee_list, key=lambda x: int(x["사원번호"][0:4]), reverse=not self.__sort_ascending)
 
     def __updateViewer(self):
         self.__sort()

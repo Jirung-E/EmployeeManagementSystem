@@ -16,7 +16,7 @@ class EMSWorkplaceChangeWindow(QDialog, workplace_change_window):
 
     def _initUI(self):
         self.setupUi(self)
-        items = List("./data/사업장.json").data()
+        items = List("./testData/사업장.json").data()
         self.duty_select_textbox.addItems(items)
         if self.__current_data != None:
             self.duty_select_textbox.setCurrentText(self.__current_data)

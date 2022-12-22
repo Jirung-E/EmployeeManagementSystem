@@ -11,7 +11,7 @@ from Data.Table import Table
 pay_window = uic.loadUiType("./UI/pay_window.ui")[0]
 
 class EMSPayWindow(QDialog, pay_window):
-    __data = Table("./data/급여.csv")
+    __data = Table("./testData/급여.csv")
 
     def __init__(self, employee_number: str, is_editable: bool):
         super().__init__()
