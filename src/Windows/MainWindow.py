@@ -22,7 +22,14 @@ from Windows.PayWindow import *
 from Windows.DutyChangeWindow import *
 from Windows.WorkplaceChangeWindow import *
 
-from Data import Table
+from Data import *
+
+import matplotlib.pyplot as mpl
+import datetime
+
+from pyqt_toast import Toast
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 
 
 class EMSWidgetManager:
@@ -113,6 +120,7 @@ class EMS(MainWindow):
     def setTextboxesEditable(self, flag: bool):
         for e in self.textboxes.values():
             e.setEditable(flag)
+        self.textboxes["employee_number"].setEditable(False)
         self.textboxes["pay"].setEditable(False)
         self.textboxes["duty"].setEditable(False)
         self.textboxes["workplace"].setEditable(False)
@@ -129,18 +137,6 @@ class EMS(MainWindow):
         else:
             self.buttons["edit"].setText("수정")
             self.buttons["save"].setText("저장(&S)")
-
-    def popLoadWindow(self):
-        sub = EMSLoadWindow(self.data)
-        data, ok = sub.show()
-        if ok:
-            self.current_data = data
-            if data == None:
-                self.buttons["edit"].setEnabled(False)
-                self.widgets.clear()
-            else:
-                self.buttons["edit"].setEnabled(True)
-                self.widgets.showData(data)
 
     def clickEditButton(self):
         if self.is_editable:
@@ -161,6 +157,11 @@ class EMS(MainWindow):
 
     def editDone(self):
         self.setEditable(False)
+        if self.current_data != None:
+            if self.current_data["사원번호"] != self.textboxes["employee_number"].getCurrentText():
+                self.current_data = self.data.getNewEmptyRecord()
+        else:
+            self.current_data = self.data.getNewEmptyRecord()
         self.current_data["사원번호"] = self.textboxes["employee_number"].getCurrentText()
         self.current_data["이름"] = self.textboxes["name"].getCurrentText()
         self.current_data["주소"] = self.textboxes["address"].getCurrentText()
@@ -178,19 +179,46 @@ class EMS(MainWindow):
             self.editDone()
         else:
             self.data.save()
+            toast = Toast("\n저장되었습니다\n", parent=self.origin)
+            toast.setOpacity(0.7)
+            toast.setFont(QFont("Arial", 12, weight=80))
+            toast.setAlignment(Qt.AlignCenter)
+            toast.show()
 
     def clickSaveToolButton(self):
         print("click save tool button")
 
     def clickAddButton(self):
         self.widgets.clear()
-        # 사원번호 자동 설정
-        # 입사일 오늘로 설정
-        self.clickEditButton()
+        self.editStart()
         self.buttons["edit"].setEnabled(True)
+        today = datetime.datetime.now().date()
+        self.textboxes["start_date"].setText(f"{today}")
+        data = []
+        for e in self.data:
+            if int(e["사원번호"][0:4]) == today.year:
+                data.append(int(e["사원번호"][5:8]))
+        if len(data) == 0:
+            lastest = 0
+        else:
+            data = sorted(data, reverse=True)
+            lastest = data[0]
+        self.textboxes["employee_number"].setText(f"{today.year}-{lastest+1:0>3}")
 
     def clickLoadButton(self):
         self.popLoadWindow()
+
+    def popLoadWindow(self):
+        sub = EMSLoadWindow(self.data)
+        data, ok = sub.show()
+        if ok:
+            self.current_data = data
+            if data == None:
+                self.buttons["edit"].setEnabled(False)
+                self.widgets.clear()
+            else:
+                self.buttons["edit"].setEnabled(True)
+                self.widgets.showData(data)
 
     def clickViewMoreAboutPayButton(self):
         if self.current_data == None:

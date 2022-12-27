@@ -1,4 +1,4 @@
-from Data import Data
+from Data import *
 
 import csv
 
@@ -49,7 +49,7 @@ class Table(Data):
                 return e
         return None
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> Record:
         return Table.Record(self.__attributes, self.__data[index])
 
     def getAttributes(self):
@@ -57,6 +57,10 @@ class Table(Data):
 
     def getNumOfRecords(self):
         return len(self.__data)
+
+    def getNewEmptyRecord(self) -> Record:
+        self.__data.append([ "" for _ in range(0, len(self.__attributes)) ])
+        return self[len(self.__data)-1]
 
 if __name__ == "__main__":
     data = Table("./data/직원정보.csv")
@@ -71,11 +75,19 @@ if __name__ == "__main__":
     # target = sorted(target.items(), key=lambda x: x[1])
     # print(target)
 
-    for e in data:
-        print(e.data())
-    result = sorted(data, key=lambda x: x["이름"])
-    for e in result:
-        print(e.data())
+    # for e in data:
+    #     print(e.data())
+    # result = sorted(data, key=lambda x: x["이름"])
+    # for e in result:
+    #     print(e.data())
     # for e in sorted(data, key=lambda x: x["이름"]):
     #     print(data.getRecordByKey(e).data())
-    data.save()
+    # data.save()
+
+    for e in data:
+        print(e.data())
+
+    new_rec = data.getNewEmptyRecord()
+
+    for e in data:
+        print(e.data())
