@@ -145,9 +145,3 @@ class EMSLoadWindow(QDialog, loadwindow):
     def __updateViewer(self):
         self.__sort()
         self.__viewer.show(self.__employee_list)
-
-    def __getListToBeShown(self):
-        if self.__triggered(self.search_filter_2):
-            return self.__getFilteredList()
-        elif self.__triggered(self.search_button):
-            return self.__getSearchResultList()

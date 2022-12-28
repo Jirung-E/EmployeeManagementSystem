@@ -140,7 +140,26 @@ class EMS(MainWindow):
 
     def clickEditButton(self):
         if self.is_editable:
-            self.editCancel()
+            sub = QDialog(self.origin)
+            sub.setFixedSize(270, 120)
+            sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
+            sub.setWindowTitle("취소")
+            sub.setFont(self.origin.font())
+            main_layout = QVBoxLayout(sub)
+            button_layout = QHBoxLayout()
+            button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
+            cancel_button = QPushButton("아니오", sub)
+            cancel_button.clicked.connect(sub.reject)
+            button_layout.addWidget(cancel_button)
+            ok_button = QPushButton("예", sub)
+            ok_button.clicked.connect(sub.accept)
+            button_layout.addWidget(ok_button)
+            main_layout.addWidget(QLabel("편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?", sub))
+            main_layout.addLayout(button_layout)
+            sub.setLayout(main_layout)
+            ok = sub.exec_()
+            if ok:
+                self.editCancel()
         else:
             self.editStart()
         
