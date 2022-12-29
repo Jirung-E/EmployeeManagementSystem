@@ -62,6 +62,14 @@ class Table(Data):
         self.__data.append([ "" for _ in range(0, len(self.__attributes)) ])
         return self[len(self.__data)-1]
 
+    def delete(self, key: str):
+        i = 0
+        for e in self:
+            if e[self.__primary_key] == key:
+                self.__data.pop(i)
+                return
+            i += 1
+
 if __name__ == "__main__":
     data = Table("./data/직원정보.csv")
     # print(data.getAttributes())
@@ -86,8 +94,10 @@ if __name__ == "__main__":
 
     for e in data:
         print(e.data())
+    print('\n\n')
 
     new_rec = data.getNewEmptyRecord()
+    data.delete("2022-125")
 
     for e in data:
         print(e.data())

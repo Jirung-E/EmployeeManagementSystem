@@ -128,14 +128,18 @@ class EMS(MainWindow):
     def setButtonsEditable(self, flag: bool):
         self.buttons["duty_change"].setEnabled(flag)
         self.buttons["workplace_change"].setEnabled(flag)
-        self.buttons["load"].setHidden(flag)
         self.buttons["add"].setHidden(flag)
+        self.buttons["load"].setHidden(flag)
         self.buttons["save_tool"].setHidden(flag)
         if flag is True:
             self.buttons["edit"].setText("취소")
+            self.buttons["add"].setText("삭제")
+            self.buttons["add"].origin.setStyleSheet('Color : red')
             self.buttons["save"].setText("확인")
         else:
             self.buttons["edit"].setText("수정")
+            self.buttons["add"].setText("추가")
+            self.buttons["add"].origin.setStyleSheet('Color : black')
             self.buttons["save"].setText("저장(&S)")
 
     def clickEditButton(self):
@@ -165,6 +169,7 @@ class EMS(MainWindow):
         
     def editStart(self):
         self.setEditable(True)
+        self.buttons["add"].setHidden(False)
 
     def editCancel(self):
         self.setEditable(False)
@@ -208,8 +213,30 @@ class EMS(MainWindow):
         print("click save tool button")
 
     def clickAddButton(self):
+        if self.is_editable:
+            sub = QDialog(self.origin)
+            sub.setFixedSize(270, 120)
+            sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
+            sub.setWindowTitle("삭제")
+            sub.setFont(self.origin.font())
+            main_layout = QVBoxLayout(sub)
+            button_layout = QHBoxLayout()
+            button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
+            cancel_button = QPushButton("아니오", sub)
+            cancel_button.clicked.connect(sub.reject)
+            button_layout.addWidget(cancel_button)
+            ok_button = QPushButton("예", sub)
+            ok_button.clicked.connect(sub.accept)
+            button_layout.addWidget(ok_button)
+            main_layout.addWidget(QLabel("현재 데이터가 영구적으로 소실됩니다.\n정말 삭제 하시겠습니까?", sub))
+            main_layout.addLayout(button_layout)
+            sub.setLayout(main_layout)
+            ok = sub.exec_()
+            if ok:
+                self.deleteCurrentData()
+                return
         self.widgets.clear()
-        self.editStart()
+        self.setEditable(True)
         self.buttons["edit"].setEnabled(True)
         today = datetime.datetime.now().date()
         self.textboxes["start_date"].setText(f"{today}")
@@ -223,6 +250,13 @@ class EMS(MainWindow):
             data = sorted(data, reverse=True)
             lastest = data[0]
         self.textboxes["employee_number"].setText(f"{today.year}-{lastest+1:0>3}")
+
+    def deleteCurrentData(self):
+        self.data.delete(self.current_data["사원번호"])
+        self.current_data = None
+        self.setEditable(False)
+        self.buttons["edit"].setEnabled(False)
+        self.widgets.clear()
 
     def clickLoadButton(self):
         self.popLoadWindow()
