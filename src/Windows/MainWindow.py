@@ -144,24 +144,7 @@ class EMS(MainWindow):
 
     def clickEditButton(self):
         if self.is_editable:
-            sub = QDialog(self.origin)
-            sub.setFixedSize(270, 120)
-            sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
-            sub.setWindowTitle("취소")
-            sub.setFont(self.origin.font())
-            main_layout = QVBoxLayout(sub)
-            button_layout = QHBoxLayout()
-            button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
-            cancel_button = QPushButton("아니오", sub)
-            cancel_button.clicked.connect(sub.reject)
-            button_layout.addWidget(cancel_button)
-            ok_button = QPushButton("예", sub)
-            ok_button.clicked.connect(sub.accept)
-            button_layout.addWidget(ok_button)
-            main_layout.addWidget(QLabel("편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?", sub))
-            main_layout.addLayout(button_layout)
-            sub.setLayout(main_layout)
-            ok = sub.exec_()
+            ok = self.yesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?")
             if ok:
                 self.editCancel()
         else:
@@ -214,24 +197,7 @@ class EMS(MainWindow):
 
     def clickAddButton(self):
         if self.is_editable:
-            sub = QDialog(self.origin)
-            sub.setFixedSize(270, 120)
-            sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
-            sub.setWindowTitle("삭제")
-            sub.setFont(self.origin.font())
-            main_layout = QVBoxLayout(sub)
-            button_layout = QHBoxLayout()
-            button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
-            cancel_button = QPushButton("아니오", sub)
-            cancel_button.clicked.connect(sub.reject)
-            button_layout.addWidget(cancel_button)
-            ok_button = QPushButton("예", sub)
-            ok_button.clicked.connect(sub.accept)
-            button_layout.addWidget(ok_button)
-            main_layout.addWidget(QLabel("현재 데이터가 영구적으로 소실됩니다.\n정말 삭제 하시겠습니까?", sub))
-            main_layout.addLayout(button_layout)
-            sub.setLayout(main_layout)
-            ok = sub.exec_()
+            ok = self.yesOrNoWindow("삭제", "정말 삭제 하시겠습니까?")
             if ok:
                 self.deleteCurrentData()
             return
@@ -297,3 +263,23 @@ class EMS(MainWindow):
         duty, ok = sub.show()
         if ok:
             self.textboxes["workplace"].setText(duty)
+
+    def yesOrNoWindow(self, title: str, description: str):
+        sub = QDialog(self.origin)
+        sub.setFixedSize(270, 120)
+        sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
+        sub.setWindowTitle(title)
+        sub.setFont(self.origin.font())
+        main_layout = QVBoxLayout(sub)
+        button_layout = QHBoxLayout()
+        button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        cancel_button = QPushButton("아니오", sub)
+        cancel_button.clicked.connect(sub.reject)
+        button_layout.addWidget(cancel_button)
+        ok_button = QPushButton("예", sub)
+        ok_button.clicked.connect(sub.accept)
+        button_layout.addWidget(ok_button)
+        main_layout.addWidget(QLabel(description, sub))
+        main_layout.addLayout(button_layout)
+        sub.setLayout(main_layout)
+        return sub.exec_()
