@@ -234,7 +234,7 @@ class EMS(MainWindow):
             ok = sub.exec_()
             if ok:
                 self.deleteCurrentData()
-                return
+            return
         self.widgets.clear()
         self.setEditable(True)
         self.buttons["edit"].setEnabled(True)
