@@ -19,7 +19,7 @@ class Table(Data):
     class Record(Data):
         def __init__(self, attributes, data):
             self.__attributes = attributes
-            self.__data = data
+            self.__data: list = data
 
         def data(self):
             return self.__data

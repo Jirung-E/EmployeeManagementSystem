@@ -21,6 +21,7 @@ from Windows.LoadWindow import *
 from Windows.PayWindow import *
 from Windows.DutyChangeWindow import *
 from Windows.WorkplaceChangeWindow import *
+from Windows.LeaveWindow import *
 
 from Data import *
 
@@ -66,6 +67,7 @@ class EMSWidgetManager:
             "about_workdate": QtButton(self.window.origin, "view_more_about_workdate_button"),
             "duty_change": QtButton(self.window.origin, "duty_change_button"),
             "workplace_change": QtButton(self.window.origin, "workplace_change_button"),
+            "leave": QtButton(self.window.origin, "leave_button"),
         }
 
     def showData(self, data):
@@ -111,6 +113,7 @@ class EMS(MainWindow):
         self.buttons["about_workdate"].bindFunction(self.clickViewMoreAboutWorkdateButton)
         self.buttons["duty_change"].bindFunction(self.clickDutyChangeButton)
         self.buttons["workplace_change"].bindFunction(self.clickWorkplaceChangeButton)
+        self.buttons["leave"].bindFunction(self.clickLeaveButton)
 
     def setEditable(self, flag: bool):
         self.is_editable = flag
@@ -263,6 +266,17 @@ class EMS(MainWindow):
         duty, ok = sub.show()
         if ok:
             self.textboxes["workplace"].setText(duty)
+
+    def clickLeaveButton(self):
+        if self.current_data == None:
+            key = None
+        else:
+            key = self.current_data["사원번호"]
+        sub = EMSPayWindow(key, self.is_editable)
+        sub = EMSLeaveWindow(key, self.is_editable)
+        ok = sub.show()
+        if ok:
+            print("Hello")
 
     def yesOrNoWindow(self, title: str, description: str):
         sub = QDialog(self.origin)
