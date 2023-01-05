@@ -1137,6 +1137,23 @@
            <number>0</number>
           </property>
           <item>
+           <widget class="QPushButton" name="cancel_button">
+            <property name="text">
+             <string>취소</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="delete_button">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 0, 0);</string>
+            </property>
+            <property name="text">
+             <string>삭제</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="edit_button">
             <property name="font">
              <font>
@@ -1169,6 +1186,13 @@
           <property name="spacing">
            <number>0</number>
           </property>
+          <item>
+           <widget class="QPushButton" name="ok_button">
+            <property name="text">
+             <string>확인</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QPushButton" name="save_button">
             <property name="minimumSize">

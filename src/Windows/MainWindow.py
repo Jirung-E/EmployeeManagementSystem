@@ -58,11 +58,14 @@ class EMSWidgetManager:
 
     def _loadButtons(self):
         self.window.buttons = {
+            "load": QtButton(self.window.origin, "load_button"),
+            "cancel": QtButton(self.window.origin, "cancel_button"), 
+            "delete": QtButton(self.window.origin, "delete_button"), 
             "edit": QtButton(self.window.origin, "edit_button"), 
+            "add": QtButton(self.window.origin, "add_button"),
+            "ok": QtButton(self.window.origin, "ok_button"), 
             "save": QtButton(self.window.origin, "save_button"),
             "save_tool": QtButton(self.window.origin, "save_tool_button"),
-            "add": QtButton(self.window.origin, "add_button"),
-            "load": QtButton(self.window.origin, "load_button"),
             "about_pay": QtButton(self.window.origin, "view_more_about_pay_button"),
             "about_workdate": QtButton(self.window.origin, "view_more_about_workdate_button"),
             "duty_change": QtButton(self.window.origin, "duty_change_button"),
@@ -94,17 +97,20 @@ class EMSWidgetManager:
 class EMS(MainWindow):
     def __init__(self):
         super().__init__(MainForm())
-        self.widgets = EMSWidgetManager(self)
-        self.widgets.loadWidgets()
+        self.__widgets = EMSWidgetManager(self)
+        self.__widgets.loadWidgets()
         self._bindFunctionsToButtons()
-        self.is_editable: bool = False
-        self.data = Table("./testData/직원정보.csv")
-        self.current_data: Table.Record = None
-        self.setEditable(False)
-        self.buttons["edit"].setEnabled(False)
+        self.__is_editable: bool = False
+        self.adding: bool = False
+        self.__data = Table("./testData/직원정보.csv")
+        self.__current_data: Table.Record = None
+        self.__init()
 
     def _bindFunctionsToButtons(self):
+        self.buttons["cancel"].bindFunction(self.clickCancelButton)
+        self.buttons["delete"].bindFunction(self.clickDeleteButton)
         self.buttons["edit"].bindFunction(self.clickEditButton)
+        self.buttons["ok"].bindFunction(self.clickOkButton)
         self.buttons["save"].bindFunction(self.clickSaveButton)
         self.buttons["save_tool"].bindFunction(self.clickSaveToolButton)
         self.buttons["add"].bindFunction(self.clickAddButton)
@@ -115,8 +121,13 @@ class EMS(MainWindow):
         self.buttons["workplace_change"].bindFunction(self.clickWorkplaceChangeButton)
         self.buttons["leave"].bindFunction(self.clickLeaveButton)
 
+    def __init(self):
+        self.setEditable(False)
+        self.buttons["edit"].setEnabled(False)
+        self.buttons["leave"].setHidden(True)
+
     def setEditable(self, flag: bool):
-        self.is_editable = flag
+        self.__is_editable = flag
         self.setTextboxesEditable(flag)
         self.setButtonsEditable(flag)
 
@@ -129,88 +140,104 @@ class EMS(MainWindow):
         self.textboxes["workplace"].setEditable(False)
 
     def setButtonsEditable(self, flag: bool):
+        if self.__current_data == None:
+            self.buttons["edit"].setEnabled(False)
+        else:
+            self.buttons["edit"].setEnabled(True)
         self.buttons["duty_change"].setEnabled(flag)
         self.buttons["workplace_change"].setEnabled(flag)
         self.buttons["add"].setHidden(flag)
         self.buttons["load"].setHidden(flag)
         self.buttons["save_tool"].setHidden(flag)
-        if flag is True:
-            self.buttons["edit"].setText("취소")
-            self.buttons["add"].setText("삭제")
-            self.buttons["add"].origin.setStyleSheet('Color : red')
-            self.buttons["save"].setText("확인")
-        else:
-            self.buttons["edit"].setText("수정")
-            self.buttons["add"].setText("추가")
-            self.buttons["add"].origin.setStyleSheet('Color : black')
-            self.buttons["save"].setText("저장(&S)")
+        self.buttons["edit"].setHidden(flag)
+        self.buttons["add"].setHidden(flag)
+        self.buttons["save"].setHidden(flag)
+        self.buttons["cancel"].setHidden(not flag)
+        self.buttons["delete"].setHidden(not flag)
+        self.buttons["ok"].setHidden(not flag)
+
+    def clickCancelButton(self):
+        ok = self.yesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?")
+        if ok:
+            if self.adding:
+                self.addCancel()
+            else:
+                self.editCancel()
+
+    def clickDeleteButton(self):
+        ok = self.yesOrNoWindow("삭제", "정말 삭제 하시겠습니까?")
+        if ok:
+            self.deleteCurrentData()
+
+    def deleteCurrentData(self):
+        self.__data.delete(self.__current_data["사원번호"])
+        self.__current_data = None
+        self.setEditable(False)
+        self.buttons["edit"].setEnabled(False)
+        self.buttons["leave"].setHidden(True)
+        self.__widgets.clear()
 
     def clickEditButton(self):
-        if self.is_editable:
-            ok = self.yesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?")
-            if ok:
-                self.editCancel()
-        else:
-            self.editStart()
+        self.editStart()
         
     def editStart(self):
         self.setEditable(True)
-        self.buttons["add"].setHidden(False)
 
     def editCancel(self):
         self.setEditable(False)
-        if self.current_data == None:
+        if self.__current_data == None:
             self.buttons["edit"].setEnabled(False)
-            self.widgets.clear()
+            self.__widgets.clear()
         else:
-            self.widgets.showData(self.current_data)
+            self.__widgets.showData(self.__current_data)
 
     def editDone(self):
         self.setEditable(False)
-        if self.current_data != None:
-            if self.current_data["사원번호"] != self.textboxes["employee_number"].getCurrentText():
-                self.current_data = self.data.getNewEmptyRecord()
+        self.saveDatafromViewerToCurrentData()
+
+    def saveDatafromViewerToCurrentData(self):
+        self.__current_data["사원번호"] = self.textboxes["employee_number"].getCurrentText()
+        self.__current_data["이름"] = self.textboxes["name"].getCurrentText()
+        self.__current_data["주소"] = self.textboxes["address"].getCurrentText()
+        self.__current_data["주민번호"] = self.textboxes["rrn"].getCurrentText()
+        self.__current_data["전화번호"] = self.textboxes["phone_number"].getCurrentText()
+        self.__current_data["계좌"] = self.textboxes["bank"][0].getCurrentText() + " " + self.textboxes["bank"][1].getCurrentText()
+        self.__current_data["급여"] = self.textboxes["pay"].getCurrentText()
+        self.__current_data["직책"] = self.textboxes["duty"].getCurrentText()
+        self.__current_data["근무지"] = self.textboxes["workplace"].getCurrentText()
+        self.__current_data["입사일"] = self.textboxes["start_date"].getCurrentText()
+        self.__current_data["퇴사일"] = self.textboxes["end_date"].getCurrentText()
+
+    def clickOkButton(self):
+        if self.adding:
+            self.addDone()
         else:
-            self.current_data = self.data.getNewEmptyRecord()
-        self.current_data["사원번호"] = self.textboxes["employee_number"].getCurrentText()
-        self.current_data["이름"] = self.textboxes["name"].getCurrentText()
-        self.current_data["주소"] = self.textboxes["address"].getCurrentText()
-        self.current_data["주민번호"] = self.textboxes["rrn"].getCurrentText()
-        self.current_data["전화번호"] = self.textboxes["phone_number"].getCurrentText()
-        self.current_data["계좌"] = self.textboxes["bank"][0].getCurrentText() + " " + self.textboxes["bank"][1].getCurrentText()
-        self.current_data["급여"] = self.textboxes["pay"].getCurrentText()
-        self.current_data["직책"] = self.textboxes["duty"].getCurrentText()
-        self.current_data["근무지"] = self.textboxes["workplace"].getCurrentText()
-        self.current_data["입사일"] = self.textboxes["start_date"].getCurrentText()
-        self.current_data["퇴사일"] = self.textboxes["end_date"].getCurrentText()
+            self.editDone()
 
     def clickSaveButton(self):
-        if self.is_editable:
-            self.editDone()
-        else:
-            self.data.save()
-            toast = Toast("\n저장되었습니다\n", parent=self.origin)
-            toast.setOpacity(0.7)
-            toast.setFont(QFont("Arial", 12, weight=80))
-            toast.setAlignment(Qt.AlignCenter)
-            toast.show()
+        self.__data.save()
+        toast = Toast("\n저장되었습니다\n", parent=self.origin)
+        toast.setOpacity(0.7)
+        toast.setFont(QFont("Arial", 12, weight=80))
+        toast.setAlignment(Qt.AlignCenter)
+        toast.show()
 
     def clickSaveToolButton(self):
         print("click save tool button")
 
     def clickAddButton(self):
-        if self.is_editable:
-            ok = self.yesOrNoWindow("삭제", "정말 삭제 하시겠습니까?")
-            if ok:
-                self.deleteCurrentData()
-            return
-        self.widgets.clear()
+        self.addStart()
+
+    def addStart(self):
+        self.adding = True
         self.setEditable(True)
-        self.buttons["edit"].setEnabled(True)
+        self.__widgets.clear()
+        self.buttons["delete"].setHidden(True)
+        self.buttons["leave"].setHidden(True)
         today = datetime.datetime.now().date()
         self.textboxes["start_date"].setText(f"{today}")
         data = []
-        for e in self.data:
+        for e in self.__data:
             if int(e["사원번호"][0:4]) == today.year:
                 data.append(int(e["사원번호"][5:8]))
         if len(data) == 0:
@@ -220,36 +247,40 @@ class EMS(MainWindow):
             lastest = data[0]
         self.textboxes["employee_number"].setText(f"{today.year}-{lastest+1:0>3}")
 
-    def deleteCurrentData(self):
-        self.data.delete(self.current_data["사원번호"])
-        self.current_data = None
+    def addCancel(self):
+        if self.__current_data == None:
+            self.__widgets.clear()
+        else:
+            self.__widgets.showData(self.__current_data)
+            self.buttons["leave"].setHidden(False)
         self.setEditable(False)
-        self.buttons["edit"].setEnabled(False)
-        self.widgets.clear()
+
+    def addDone(self):
+        self.__current_data = self.__data.getNewEmptyRecord()
+        self.saveDatafromViewerToCurrentData()
+        self.buttons["leave"].setHidden(False)
+        self.setEditable(False)
 
     def clickLoadButton(self):
         self.popLoadWindow()
 
     def popLoadWindow(self):
-        sub = EMSLoadWindow(self.data)
+        sub = EMSLoadWindow(self.__data)
         data, ok = sub.show()
         if ok:
-            self.current_data = data
-            if data == None:
-                self.buttons["edit"].setEnabled(False)
-                self.widgets.clear()
-            else:
-                self.buttons["edit"].setEnabled(True)
-                self.widgets.showData(data)
+            self.__current_data = data
+            self.buttons["edit"].setEnabled(True)
+            self.buttons["leave"].setHidden(False)
+            self.__widgets.showData(data)
 
     def clickViewMoreAboutPayButton(self):
-        if self.current_data == None:
+        if self.__current_data == None:
             key = None
         else:
-            key = self.current_data["사원번호"]
-        sub = EMSPayWindow(key, self.is_editable)
+            key = self.__current_data["사원번호"]
+        sub = EMSPayWindow(key, self.__is_editable)
         total_pay, ok = sub.show()
-        if ok and self.is_editable:
+        if ok and self.__is_editable:
             self.textboxes["pay"].setText(total_pay)
 
     def clickViewMoreAboutWorkdateButton(self):
@@ -268,12 +299,12 @@ class EMS(MainWindow):
             self.textboxes["workplace"].setText(duty)
 
     def clickLeaveButton(self):
-        if self.current_data == None:
+        if self.__current_data == None:
             key = None
         else:
-            key = self.current_data["사원번호"]
-        sub = EMSPayWindow(key, self.is_editable)
-        sub = EMSLeaveWindow(key, self.is_editable)
+            key = self.__current_data["사원번호"]
+        sub = EMSPayWindow(key, self.__is_editable)
+        sub = EMSLeaveWindow(key, self.__is_editable)
         ok = sub.show()
         if ok:
             print("Hello")

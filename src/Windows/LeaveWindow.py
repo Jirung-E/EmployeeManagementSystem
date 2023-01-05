@@ -26,6 +26,7 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.half_checkbox.clicked.connect(self.halfCheckboxUpdated)
         self.start_date.setDate(date.today())
         self.end_date.setDate(self.start_date.date())
+        self.delete_button.setEnabled(False)
 
     def _bindFunctionsToButtons(self):
         self.close_button.clicked.connect(self.close)
@@ -33,6 +34,7 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.show_on_calendar_2.clicked.connect(self.showCalendar2)
         self.add_button.clicked.connect(self.clickAddButton)
         self.delete_button.clicked.connect(self.clickDeleteButton)
+        self.list_view.clicked.connect(self.__listViewUpdated)
 
     def show(self):
         ok = super().exec_()
@@ -63,6 +65,12 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.half_checkbox.setEnabled(flag)
         self.add_button.setEnabled(flag)
         self.delete_button.setEnabled(flag)
+
+    def __listViewUpdated(self):
+        if len(self.list_view.selectedIndexes()) == 0:
+            self.delete_button.setEnabled(False)
+        else:
+            self.delete_button.setEnabled(True)
 
     def startDateChanged(self):
         if self.half_checkbox.isChecked():
