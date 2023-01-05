@@ -28,7 +28,6 @@ class EMSLoadWindow(QDialog, loadwindow):
         self._initUI()
         self._bindFunctionsToButtons()
         self.__viewer = ListViewer(self.list_view)
-        self.list_view.doubleClicked.connect(self.accept)
         self.__updateViewer()
 
     def _initUI(self):
@@ -36,6 +35,9 @@ class EMSLoadWindow(QDialog, loadwindow):
         self.__setUpFilters()
         self.__setUpOrderByList()
         self.__setUpEmployeeList()
+        self.list_view.doubleClicked.connect(self.accept)
+        self.list_view.clicked.connect(self.__listViewUpdated)
+        self.ok_button.setEnabled(False)
 
     def _bindFunctionsToButtons(self):
         self.ok_button.clicked.connect(self.accept)
@@ -52,6 +54,16 @@ class EMSLoadWindow(QDialog, loadwindow):
                 key = self.list_view.model().itemFromIndex(index).text()[1:9]
                 data = self.__data.getRecordByKey(key)
         return data, ok
+
+    def __updateViewer(self):
+        self.__sort()
+        self.__viewer.show(self.__employee_list)
+
+    def __listViewUpdated(self):
+        if len(self.list_view.selectedIndexes()) == 0:
+            self.ok_button.setEnabled(False)
+        else:
+            self.ok_button.setEnabled(True)
 
     def __setUpEmployeeList(self):
         self.__employee_list: List[Table.Record] = []
@@ -141,7 +153,3 @@ class EMSLoadWindow(QDialog, loadwindow):
     def __orderByEmployeeNumber(self):
         self.__employee_list = sorted(self.__employee_list, key=lambda x: int(x["사원번호"][5:8]), reverse=not self.__sort_ascending)
         self.__employee_list = sorted(self.__employee_list, key=lambda x: int(x["사원번호"][0:4]), reverse=not self.__sort_ascending)
-
-    def __updateViewer(self):
-        self.__sort()
-        self.__viewer.show(self.__employee_list)
