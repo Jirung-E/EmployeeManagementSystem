@@ -104,6 +104,10 @@ class EMS(MainWindow):
         self.adding: bool = False
         self.__data = Table("./testData/직원정보.csv")
         self.__current_data: Table.Record = None
+        self.textbox_default_style = self.textboxes["rrn"].origin.styleSheet()
+        self.warning_label = QLabel("")
+        self.origin.rrn_layout.addWidget(self.warning_label)
+        self.warning_label.setHidden(True)
         self.__init()
 
     def _bindFunctionsToButtons(self):
@@ -125,6 +129,58 @@ class EMS(MainWindow):
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
         self.buttons["leave"].setHidden(True)
+        self.textboxes["rrn"].origin.textChanged.connect(self.__rrnDuplicateCheck)
+
+    def __rrnDuplicateCheck(self):
+        if not self.__is_editable:
+            return
+        if self.adding:
+            self.__rrnDuplicateCheckWhenAdding()
+            return
+        self.__rrnDuplicateCheckWhenEditing()
+
+
+    def __rrnDuplicateCheckWhenEditing(self):
+        rrn = self.textboxes["rrn"].getCurrentText()
+        if rrn == "":
+            self.textboxes["rrn"].setStyle(self.textbox_default_style)
+            self.warning_label.setHidden(True)
+            self.buttons["ok"].setEnabled(True)
+            return
+        for e in self.__data:
+            if rrn == e["주민번호"]:
+                if e["사원번호"] == self.textboxes["employee_number"].getCurrentText():
+                    continue
+                self.warning_label.setHidden(False)
+                self.warning_label.setStyleSheet("color: red; font: 9pt;")
+                self.warning_label.setText("이미 존재하는 주민번호 입니다.")
+                self.buttons["ok"].setEnabled(False)
+                self.textboxes["rrn"].setStyle(self.textbox_default_style + ";border: 1px solid red; background-color: #FFDDDD;")
+                return
+        else:
+            self.textboxes["rrn"].setStyle(self.textbox_default_style)
+            self.warning_label.setHidden(True)
+            self.buttons["ok"].setEnabled(True)
+
+    def __rrnDuplicateCheckWhenAdding(self):
+        rrn = self.textboxes["rrn"].getCurrentText()
+        if rrn == "":
+            self.textboxes["rrn"].setStyle(self.textbox_default_style)
+            self.warning_label.setHidden(True)
+            # self.buttons["ok"].setEnabled(True)
+            return
+        for e in self.__data:
+            if rrn == e["주민번호"]:
+                self.warning_label.setHidden(False)
+                self.warning_label.setStyleSheet("color: orange; font: 9pt;")
+                self.warning_label.setText("기존 데이터에 덮어씁니다.")
+                # self.buttons["ok"].setEnabled(False)
+                self.textboxes["rrn"].setStyle(self.textbox_default_style + ";border: 1px solid orange; background-color: #FFF8DD;")
+                return
+        else:
+            self.textboxes["rrn"].setStyle(self.textbox_default_style)
+            self.warning_label.setHidden(True)
+            # self.buttons["ok"].setEnabled(True)
 
     def setEditable(self, flag: bool):
         self.__is_editable = flag
@@ -184,12 +240,13 @@ class EMS(MainWindow):
         self.setEditable(True)
 
     def editCancel(self):
-        self.setEditable(False)
         if self.__current_data == None:
-            self.buttons["edit"].setEnabled(False)
             self.__widgets.clear()
         else:
             self.__widgets.showData(self.__current_data)
+        self.textboxes["rrn"].setStyle(self.textbox_default_style)
+        self.warning_label.setHidden(True)
+        self.setEditable(False)
 
     def editDone(self):
         self.setEditable(False)
@@ -210,7 +267,9 @@ class EMS(MainWindow):
 
     def clickOkButton(self):
         if self.adding:
-            self.addDone()
+            ok = self.yesOrNoWindow("확인", "같은 주민번호를 가진 사원이\n이미 존재합니다.\n기존 데이터에 덮어씁니다.")
+            if ok:
+                self.addDone()
         else:
             self.editDone()
 
@@ -253,12 +312,18 @@ class EMS(MainWindow):
         else:
             self.__widgets.showData(self.__current_data)
             self.buttons["leave"].setHidden(False)
+        self.textboxes["rrn"].setStyle(self.textbox_default_style)
+        self.warning_label.setHidden(True)
+        self.adding = False
         self.setEditable(False)
 
     def addDone(self):
         self.__current_data = self.__data.getNewEmptyRecord()
         self.saveDatafromViewerToCurrentData()
         self.buttons["leave"].setHidden(False)
+        self.textboxes["rrn"].setStyle(self.textbox_default_style)
+        self.warning_label.setHidden(True)
+        self.adding = False
         self.setEditable(False)
 
     def clickLoadButton(self):

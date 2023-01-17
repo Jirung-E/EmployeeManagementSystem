@@ -65,6 +65,7 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.half_checkbox.setEnabled(flag)
         self.add_button.setEnabled(flag)
         self.delete_button.setEnabled(flag)
+        self.list_view.setEnabled(flag)
 
     def __listViewUpdated(self):
         if len(self.list_view.selectedIndexes()) == 0:

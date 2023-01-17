@@ -49,6 +49,8 @@ class QtTextbox(Gui.Widgets.Textbox, QtWidget):
         palette.setColor(QPalette.Base, color)
         self.origin.setPalette(palette)
 
+    def setStyle(self, style_sheet: str):
+        self.origin.setStyleSheet(style_sheet)
 
 class QtLineEdit(QtTextbox):
     def __init__(self, window: QWidget, name: str):
@@ -60,7 +62,7 @@ class QtLineEdit(QtTextbox):
     def setText(self, text: str):
         self.origin.setText(text)
 
-    def getCurrentText(self):
+    def getCurrentText(self) -> str:
         return self.origin.text()
         
     def setEditable(self, flag: bool):

@@ -278,7 +278,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="Layout_3">
+         <layout class="QHBoxLayout" name="rrn_layout">
           <item>
            <widget class="QLabel" name="label_10">
             <property name="sizePolicy">

@@ -40,10 +40,13 @@ class Textbox(Widget):
         pass
 
     @abstractmethod
-    def getCurrentText(self, text: str):
+    def getCurrentText(self) -> str:
         pass
 
     def setColor(self, color):
+        pass
+
+    def setStyle(self, style_sheet: str):
         pass
 
 
