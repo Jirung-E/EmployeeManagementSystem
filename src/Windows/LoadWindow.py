@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PyQt5.QtGui import QColor
 
 from Data import Table
 from Data import List as ListData
@@ -16,9 +17,17 @@ class ListViewer:
 
     def show(self, data: List[Table.Record]):
         model = QStandardItemModel()
+        quit_employee = []
         for e in data:
             item = f'[{e["사원번호"]}] {e["이름"]} ({e["근무지"]} {e["직책"]})'
+            if e["퇴사일"] != "":
+                quit_employee.append(item)
+                continue
             model.appendRow(QStandardItem(item))
+        for e in quit_employee:
+            item = QStandardItem(e)
+            item.setForeground(QColor(0xB0, 0xB0, 0xB0))
+            model.appendRow(item)
         self.__origin.setModel(model)
 
 class EMSLoadWindow(QDialog, loadwindow):

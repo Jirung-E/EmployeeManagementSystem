@@ -134,9 +134,9 @@ class EMS(MainWindow):
     def __rrnDuplicateCheck(self):
         if not self.__is_editable:
             return
-        if self.adding:
-            self.__rrnDuplicateCheckWhenAdding()
-            return
+        # if self.adding:
+        #     self.__rrnDuplicateCheckWhenAdding()
+        #     return
         self.__rrnDuplicateCheckWhenEditing()
 
 
@@ -267,9 +267,7 @@ class EMS(MainWindow):
 
     def clickOkButton(self):
         if self.adding:
-            ok = self.yesOrNoWindow("확인", "같은 주민번호를 가진 사원이\n이미 존재합니다.\n기존 데이터에 덮어씁니다.")
-            if ok:
-                self.addDone()
+            self.addDone()
         else:
             self.editDone()
 
