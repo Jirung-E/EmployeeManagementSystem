@@ -11,12 +11,11 @@ from Data.Table import Table
 pay_window = uic.loadUiType("./UI/pay_window.ui")[0]
 
 class EMSPayWindow(QDialog, pay_window):
-    __data = Table("./testData/급여.csv")
-
-    def __init__(self, employee_number: str, is_editable: bool):
+    def __init__(self, data: Table, employee_number: str, is_editable: bool):
         super().__init__()
-        self.__current_data = EMSPayWindow.__data.getRecordByKey(employee_number)
+        self.__current_data = data.getRecordByKey(employee_number)
         self.__is_editable = is_editable
+        self.textboxes: Dict[str, QtTextbox] = { name: QtLineEdit(self, name) for name in data.getAttributes()[1:] }
         self._initUI()
         self.__showCurrentData()
         self._bindFunctionsToButtons()
@@ -25,10 +24,7 @@ class EMSPayWindow(QDialog, pay_window):
         self.setupUi(self)
         self.total = QtLineEdit(self, "total_pay_textbox")
         self.total.setEditable(False)
-
         main_layout = self.contents_layout
-        attr = EMSPayWindow.__data.getAttributes()[1:]
-        self.textboxes: Dict[str, QtTextbox] = { name: QtLineEdit(self, name) for name in attr }
         form = QFormLayout()
         form.setSpacing(10)
         val = QIntValidator()
@@ -49,7 +45,6 @@ class EMSPayWindow(QDialog, pay_window):
             return
         for e in self.textboxes.items():
             self.__current_data[e[0]] = e[1].getCurrentText()
-        self.__data.save()
 
     def show(self):
         ok = super().exec_()

@@ -8,9 +8,9 @@ from Data import List
 duty_change_window = uic.loadUiType("./UI/duty_change_window.ui")[0]
 
 class EMSDutyChangeWindow(QDialog, duty_change_window):
-    def __init__(self, current_data: str = None):
+    def __init__(self, current_duty: str = None):
         super().__init__()
-        self.__current_data: str = current_data
+        self.__current_data: str = current_duty
         self._initUI()
         self._bindFunctionsToButtons()
 

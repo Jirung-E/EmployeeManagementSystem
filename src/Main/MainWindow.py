@@ -1,7 +1,3 @@
-from Gui.Windows import MainWindow
-from Gui.Widgets import WidgetBox
-
-
 # ----------------------------------------------------
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
@@ -15,18 +11,19 @@ class MainForm(QMainWindow, mainwindow):
 
 # ----------------------------------------------------
 
+from Gui.Windows import MainWindow
+from Gui.Widgets import WidgetBox
 from GuiInterfaces.PyQt5.Gui.Widgets import *
-
-from Windows.LoadWindow import *
-from Windows.PayWindow import *
-from Windows.DutyChangeWindow import *
-from Windows.WorkplaceChangeWindow import *
-from Windows.LeaveWindow import *
-
+from Main.DataManager import *
+from Main.SubWindows.LoadWindow import *
+from Main.SubWindows.PayWindow import *
+from Main.SubWindows.DutyChangeWindow import *
+from Main.SubWindows.WorkplaceChangeWindow import *
+from Main.SubWindows.LeaveWindow import *
+from Main.SubWindows.YesOrNoWindow import *
 from Data import *
 
-import matplotlib.pyplot as mpl
-import datetime
+from datetime import datetime
 
 from pyqt_toast import Toast
 from PyQt5.QtCore import Qt
@@ -102,12 +99,11 @@ class EMS(MainWindow):
         self._bindFunctionsToButtons()
         self.__is_editable: bool = False
         self.adding: bool = False
-        self.__data = Table("./testData/직원정보.csv")
+        self.__data = DataManager()
+        self.__employee_data: Table = self.__data["employee_data"]
         self.__current_data: Table.Record = None
         self.textbox_default_style = self.textboxes["rrn"].origin.styleSheet()
         self.warning_label = QLabel("")
-        self.origin.rrn_layout.addWidget(self.warning_label)
-        self.warning_label.setHidden(True)
         self.__init()
 
     def _bindFunctionsToButtons(self):
@@ -127,6 +123,8 @@ class EMS(MainWindow):
 
     def __init(self):
         self.setEditable(False)
+        self.origin.rrn_layout.addWidget(self.warning_label)
+        self.warning_label.setHidden(True)
         self.buttons["edit"].setEnabled(False)
         self.buttons["leave"].setHidden(True)
         self.textboxes["rrn"].origin.textChanged.connect(self.__rrnDuplicateCheck)
@@ -147,7 +145,7 @@ class EMS(MainWindow):
             self.warning_label.setHidden(True)
             self.buttons["ok"].setEnabled(True)
             return
-        for e in self.__data:
+        for e in self.__employee_data:
             if rrn == e["주민번호"]:
                 if e["사원번호"] == self.textboxes["employee_number"].getCurrentText():
                     continue
@@ -169,7 +167,7 @@ class EMS(MainWindow):
             self.warning_label.setHidden(True)
             # self.buttons["ok"].setEnabled(True)
             return
-        for e in self.__data:
+        for e in self.__employee_data:
             if rrn == e["주민번호"]:
                 self.warning_label.setHidden(False)
                 self.warning_label.setStyleSheet("color: orange; font: 9pt;")
@@ -213,7 +211,7 @@ class EMS(MainWindow):
         self.buttons["ok"].setHidden(not flag)
 
     def clickCancelButton(self):
-        ok = self.yesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?")
+        ok = YesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?", self.origin).show()
         if ok:
             if self.adding:
                 self.addCancel()
@@ -221,12 +219,12 @@ class EMS(MainWindow):
                 self.editCancel()
 
     def clickDeleteButton(self):
-        ok = self.yesOrNoWindow("삭제", "정말 삭제 하시겠습니까?")
+        ok = YesOrNoWindow("삭제", "정말 삭제 하시겠습니까?", self.origin).show()
         if ok:
             self.deleteCurrentData()
 
     def deleteCurrentData(self):
-        self.__data.delete(self.__current_data["사원번호"])
+        self.__employee_data.delete(self.__current_data["사원번호"])
         self.__current_data = None
         self.setEditable(False)
         self.buttons["edit"].setEnabled(False)
@@ -272,6 +270,7 @@ class EMS(MainWindow):
             self.editDone()
 
     def clickSaveButton(self):
+        # self.__employee_data.save()
         self.__data.save()
         toast = Toast("\n저장되었습니다\n", parent=self.origin)
         toast.setOpacity(0.7)
@@ -291,10 +290,10 @@ class EMS(MainWindow):
         self.__widgets.clear()
         self.buttons["delete"].setHidden(True)
         self.buttons["leave"].setHidden(True)
-        today = datetime.datetime.now().date()
+        today = datetime.now().date()
         self.textboxes["start_date"].setText(f"{today}")
         data = []
-        for e in self.__data:
+        for e in self.__employee_data:
             if int(e["사원번호"][0:4]) == today.year:
                 data.append(int(e["사원번호"][5:8]))
         if len(data) == 0:
@@ -316,7 +315,7 @@ class EMS(MainWindow):
         self.setEditable(False)
 
     def addDone(self):
-        self.__current_data = self.__data.getNewEmptyRecord()
+        self.__current_data = self.__employee_data.getNewEmptyRecord()
         self.saveDatafromViewerToCurrentData()
         self.buttons["leave"].setHidden(False)
         self.textboxes["rrn"].setStyle(self.textbox_default_style)
@@ -328,7 +327,7 @@ class EMS(MainWindow):
         self.popLoadWindow()
 
     def popLoadWindow(self):
-        sub = EMSLoadWindow(self.__data)
+        sub = EMSLoadWindow(self.__employee_data)
         data, ok = sub.show()
         if ok:
             self.__current_data = data
@@ -341,7 +340,7 @@ class EMS(MainWindow):
             key = None
         else:
             key = self.__current_data["사원번호"]
-        sub = EMSPayWindow(key, self.__is_editable)
+        sub = EMSPayWindow(self.__data["pay_data"], key, self.__is_editable)
         total_pay, ok = sub.show()
         if ok and self.__is_editable:
             self.textboxes["pay"].setText(total_pay)
@@ -366,28 +365,25 @@ class EMS(MainWindow):
             key = None
         else:
             key = self.__current_data["사원번호"]
-        sub = EMSPayWindow(key, self.__is_editable)
-        sub = EMSLeaveWindow(key, self.__is_editable)
-        ok = sub.show()
-        if ok:
-            print("Hello")
+        sub = EMSLeaveWindow(self.__data["leave_data"], key, self.__is_editable)
+        sub.show()
 
-    def yesOrNoWindow(self, title: str, description: str):
-        sub = QDialog(self.origin)
-        sub.setFixedSize(270, 120)
-        sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
-        sub.setWindowTitle(title)
-        sub.setFont(self.origin.font())
-        main_layout = QVBoxLayout(sub)
-        button_layout = QHBoxLayout()
-        button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        cancel_button = QPushButton("아니오", sub)
-        cancel_button.clicked.connect(sub.reject)
-        button_layout.addWidget(cancel_button)
-        ok_button = QPushButton("예", sub)
-        ok_button.clicked.connect(sub.accept)
-        button_layout.addWidget(ok_button)
-        main_layout.addWidget(QLabel(description, sub))
-        main_layout.addLayout(button_layout)
-        sub.setLayout(main_layout)
-        return sub.exec_()
+    # def yesOrNoWindow(self, title: str, description: str):
+    #     sub = QDialog(self.origin)
+    #     sub.setFixedSize(270, 120)
+    #     sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
+    #     sub.setWindowTitle(title)
+    #     sub.setFont(self.origin.font())
+    #     main_layout = QVBoxLayout(sub)
+    #     button_layout = QHBoxLayout()
+    #     button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
+    #     cancel_button = QPushButton("아니오", sub)
+    #     cancel_button.clicked.connect(sub.reject)
+    #     button_layout.addWidget(cancel_button)
+    #     ok_button = QPushButton("예", sub)
+    #     ok_button.clicked.connect(sub.accept)
+    #     button_layout.addWidget(ok_button)
+    #     main_layout.addWidget(QLabel(description, sub))
+    #     main_layout.addLayout(button_layout)
+    #     sub.setLayout(main_layout)
+    #     return sub.exec_()

@@ -2,7 +2,7 @@ from GuiController.GuiController import GuiController
 from Gui.Windows import MainWindow
 from GuiInterfaces.PyQt5.PyQt5Interface import *
 
-from Windows.MainWindow import EMS
+from Main.MainWindow import EMS
 
 
 def main():

@@ -3,18 +3,19 @@ from PyQt5 import uic
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from datetime import date
 
+from Main.SubWindows.YesOrNoWindow import *
+
 from Data import Table
 
 leave_window = uic.loadUiType("./UI/leave_window.ui")[0]
 
 class EMSLeaveWindow(QDialog, leave_window):
-    __data = Table("./testData/휴가.csv")
-
-    def __init__(self, employee_number: str, is_editable: bool):
+    def __init__(self, data: Table, employee_number: str, is_editable: bool):
         super().__init__()
-        self._initUI()
-        self.data = EMSLeaveWindow.__data.getRecordByKey(employee_number)
+        self.__data = data
+        self.__current_data = data.getRecordByKey(employee_number)
         self.employee_number = employee_number
+        self._initUI()
         self.__showList()
         self.__setEditable(is_editable)
         self._bindFunctionsToButtons()
@@ -37,18 +38,16 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.list_view.clicked.connect(self.__listViewUpdated)
 
     def show(self):
-        ok = super().exec_()
-        if ok:
-            pass # save
+        super().exec_()
 
     def __showList(self):
-        if self.data == None:
+        if self.__current_data == None:
             return
         model = QStandardItemModel()
-        if self.data["내역"] == "":
+        if self.__current_data["내역"] == "":
             self.list_view.setModel(model)
             return
-        self.leave_list: list = self.data["내역"].split(',')
+        self.leave_list: list = self.__current_data["내역"].split(',')
         leave_list = self.leave_list[::-1]
         for e in leave_list:
             leave = e.split(':')
@@ -64,7 +63,7 @@ class EMSLeaveWindow(QDialog, leave_window):
         self.show_on_calendar_2.setEnabled(flag)
         self.half_checkbox.setEnabled(flag)
         self.add_button.setEnabled(flag)
-        self.delete_button.setEnabled(flag)
+        # self.delete_button.setEnabled(flag)
         self.list_view.setEnabled(flag)
 
     def __listViewUpdated(self):
@@ -132,18 +131,20 @@ class EMSLeaveWindow(QDialog, leave_window):
             self.updateTotal()
 
     def clickAddButton(self):
-        ok = self.yesOrNoWindow("추가", "정말 추가 하시겠습니까?")
+        ok = YesOrNoWindow("추가", "정말 추가 하시겠습니까?", self).show()
         if ok:
             self.add()
             self.__showList()
+            self.delete_button.setEnabled(False)
 
     def clickDeleteButton(self):
         if self.list_view.currentIndex().row() == -1:
             return
-        ok = self.yesOrNoWindow("삭제", "정말 삭제 하시겠습니까?")
+        ok = YesOrNoWindow("삭제", "정말 삭제 하시겠습니까?", self).show()
         if ok:
             self.delete()
             self.__showList()
+            self.delete_button.setEnabled(False)
 
     def delete(self):
         for i in self.list_view.selectedIndexes():
@@ -153,37 +154,15 @@ class EMSLeaveWindow(QDialog, leave_window):
         for i in range(len(self.leave_list), 0, -1):
             if self.leave_list[i-1] == "":
                 self.leave_list.pop(i-1)
-        self.data["내역"] = ",".join(self.leave_list)
-        EMSLeaveWindow.__data.save()
+        self.__current_data["내역"] = ",".join(self.leave_list)
 
     def add(self):
-        if self.data == None:
-            self.data = EMSLeaveWindow.__data.getNewEmptyRecord()
-            self.data["사원번호"] = self.employee_number
+        if self.__current_data == None:
+            self.__current_data = self.__data.getNewEmptyRecord()
+            self.__current_data["사원번호"] = self.employee_number
         total = self.total.text()
         leave = total + ":" + self.start_date.text() + "~" + self.end_date.text()
-        if self.data["내역"] == "":
-            self.data["내역"] = leave
+        if self.__current_data["내역"] == "":
+            self.__current_data["내역"] = leave
         else:
-            self.data["내역"] += "," + leave
-        EMSLeaveWindow.__data.save()
-
-    def yesOrNoWindow(self, title: str, description: str):
-        sub = QDialog(self)
-        sub.setFixedSize(270, 120)
-        sub.move(self.x()+self.width()//2-sub.width()//2, self.y()+self.height()//2-sub.height()//2)
-        sub.setWindowTitle(title)
-        sub.setFont(self.font())
-        main_layout = QVBoxLayout(sub)
-        button_layout = QHBoxLayout()
-        button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        cancel_button = QPushButton("아니오", sub)
-        cancel_button.clicked.connect(sub.reject)
-        button_layout.addWidget(cancel_button)
-        ok_button = QPushButton("예", sub)
-        ok_button.clicked.connect(sub.accept)
-        button_layout.addWidget(ok_button)
-        main_layout.addWidget(QLabel(description, sub))
-        main_layout.addLayout(button_layout)
-        sub.setLayout(main_layout)
-        return sub.exec_()
+            self.__current_data["내역"] += "," + leave

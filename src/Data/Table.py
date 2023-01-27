@@ -6,7 +6,7 @@ import csv
 class Table(Data):
     def __init__(self, origin_source: str = None):
         self.__origin_source = origin_source
-        self.__attributes = {}   # column_name
+        self.__attributes: dict = {}   # column_name : index
         if origin_source != None:
             origin_file = open(origin_source, 'r', encoding="utf-8")
             self.__data = [ data for data in csv.reader(origin_file) ]
@@ -18,7 +18,7 @@ class Table(Data):
 
     class Record(Data):
         def __init__(self, attributes, data):
-            self.__attributes = attributes
+            self.__attributes: dict = attributes
             self.__data: list = data
 
         def data(self):
@@ -29,6 +29,9 @@ class Table(Data):
 
         def __setitem__(self, attribute: str, value):
             self.__data[self.__attributes[attribute]] = value
+
+        def getAttributes(self):
+            return self.__attributes.values()
 
     def save(self):
         origin_file = open(self.__origin_source, 'w', encoding="utf-8", newline='')

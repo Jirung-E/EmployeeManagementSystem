@@ -1,11 +1,11 @@
-import pandas
-import matplotlib.pyplot as mpl
+from abc import abstractmethod
+
 
 class Data:
-    pass
+    @abstractmethod
+    def __init__(self, origin_source: str = None):
+        pass
 
-
-if __name__ == "__main__":
-    pandas.DataFrame()
-    mpl.plot([1, 2, 3, 7, 10, -2])
-    mpl.show()
+    @abstractmethod
+    def save(self):
+        pass
