@@ -1,5 +1,20 @@
+from Gui.Windows import MainWindow
+from Gui.Widgets import WidgetBox
+from GuiInterfaces.PyQt5.Gui.Widgets import *
+from Main.SubWindows import *
+from Main.DataManager import *
+from Data import *
+
+from datetime import datetime
+
+from pyqt_toast import Toast
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
+
+
 # ----------------------------------------------------
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QCloseEvent
 from PyQt5 import uic
 
 mainwindow = uic.loadUiType("./UI/mainwindow.ui")[0]
@@ -8,26 +23,20 @@ class MainForm(QMainWindow, mainwindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.is_saved = True
+        
+    def closeEvent(self, event: QCloseEvent):
+        if self.is_saved:
+            event.accept()
+            return
+        ok = YesOrNoWindow("종료", "편집한 내용이 저장되지 않았습니다.\n저장하지않고 종료 하시겠습니까?", self).show()
+        if ok:
+            event.accept()
+        else:
+            event.ignore()
 
 # ----------------------------------------------------
 
-from Gui.Windows import MainWindow
-from Gui.Widgets import WidgetBox
-from GuiInterfaces.PyQt5.Gui.Widgets import *
-from Main.DataManager import *
-from Main.SubWindows.LoadWindow import *
-from Main.SubWindows.PayWindow import *
-from Main.SubWindows.DutyChangeWindow import *
-from Main.SubWindows.WorkplaceChangeWindow import *
-from Main.SubWindows.LeaveWindow import *
-from Main.SubWindows.YesOrNoWindow import *
-from Data import *
-
-from datetime import datetime
-
-from pyqt_toast import Toast
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
 
 
 class EMSWidgetManager:
@@ -232,6 +241,7 @@ class EMS(MainWindow):
         self.__widgets.clear()
 
     def clickEditButton(self):
+        self.origin.is_saved = False
         self.editStart()
         
     def editStart(self):
@@ -271,6 +281,7 @@ class EMS(MainWindow):
 
     def clickSaveButton(self):
         # self.__employee_data.save()
+        self.origin.is_saved = True
         self.__data.save()
         toast = Toast("\n저장되었습니다\n", parent=self.origin)
         toast.setOpacity(0.7)
@@ -282,6 +293,7 @@ class EMS(MainWindow):
         print("click save tool button")
 
     def clickAddButton(self):
+        self.origin.is_saved = False
         self.addStart()
 
     def addStart(self):
