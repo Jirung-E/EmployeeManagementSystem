@@ -68,18 +68,3 @@
    #### 보이기
    - [x] 불러오기 했을시
    - [x] 추가 완료시
-
-
-
-# # Refactor
- ### 데이터의 일괄적인 저장을 위해 DataManager 클래스 만들기
- ### MainWindow.py
-  #### * 현재 MainWindow.py 파일이 혼자 300줄을 넘어가는데, 가독성이 너무 떨어지므로 클래스를 나눌 필요가 있음. EMS클래스 혼자 250줄 가까이 차지하는거 같으니까 여기에 버튼별로 클래스를 나눠주는게 좋을거같음. AddButton, EditButton, SaveButton 등등...
-  - [ ] LoadButton
-  - [ ] CancelButton
-  - [ ] DeleteButton
-  - [ ] EditButton
-  - [ ] AddButton
-  - [ ] OkButton
-  - [ ] SaveButton
-  - [ ] SaveToolButton
