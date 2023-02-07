@@ -46,6 +46,7 @@ class EMSWidgetManager:
     def loadWidgets(self):
         self._loadTextboxes()
         self._loadButtons()
+        self.window.checkboxes: Dict[str, QCheckBox] = { "disability": self.window.origin.findChild(QCheckBox, "disability_checkbox") }
 
     def _loadTextboxes(self):
         self.window.textboxes = {
@@ -54,6 +55,7 @@ class EMSWidgetManager:
             "address": QtLineEdit(self.window.origin, "address_textbox"),
             "rrn": QtLineEdit(self.window.origin, "rrn_textbox"),
             "phone_number": QtLineEdit(self.window.origin, "phone_number_textbox"),
+            "disability": QtLineEdit(self.window.origin, "disability_textbox"),
             "bank": WidgetBox(QtLineEdit(self.window.origin, "bank_textbox_1"), QtLineEdit(self.window.origin, "bank_textbox_2")),
             "duty": QtLineEdit(self.window.origin, "duty_textbox"),
             "pay": QtLineEdit(self.window.origin, "pay_textbox"),
@@ -85,6 +87,12 @@ class EMSWidgetManager:
         self.window.textboxes["address"].setText(data["주소"])
         self.window.textboxes["rrn"].setText(data["주민번호"])
         self.window.textboxes["phone_number"].setText(data["전화번호"])
+        disa = data["장애"]
+        if disa == "":
+            self.window.checkboxes["disability"].setChecked(False)
+        else:
+            self.window.checkboxes["disability"].setChecked(True)
+        self.window.textboxes["disability"].setText(disa)
         if data["계좌"] != "":
             bank_account = data["계좌"].split(' ')
             self.window.textboxes["bank"][0].setText(bank_account[0])
@@ -98,6 +106,8 @@ class EMSWidgetManager:
     def clear(self):
         for e in self.window.textboxes.values():
             e.setText("")
+        for e in self.window.checkboxes.values():
+            e.setChecked(False)
 
 
 class EMS(MainWindow):
@@ -105,6 +115,7 @@ class EMS(MainWindow):
         super().__init__(MainForm())
         self.__widgets = EMSWidgetManager(self)
         self.__widgets.loadWidgets()
+        self.checkboxes["disability"].clicked.connect(self.clickDisabilityCheckbox)
         self._bindFunctionsToButtons()
         self.__is_editable: bool = False
         self.adding: bool = False
@@ -193,6 +204,7 @@ class EMS(MainWindow):
         self.__is_editable = flag
         self.setTextboxesEditable(flag)
         self.setButtonsEditable(flag)
+        self.setCheckboxesEditable(flag)
 
     def setTextboxesEditable(self, flag: bool):
         for e in self.textboxes.values():
@@ -201,6 +213,8 @@ class EMS(MainWindow):
         self.textboxes["pay"].setEditable(False)
         self.textboxes["duty"].setEditable(False)
         self.textboxes["workplace"].setEditable(False)
+        if not self.checkboxes["disability"].isChecked():
+            self.textboxes["disability"].setEditable(False)
 
     def setButtonsEditable(self, flag: bool):
         if self.__current_data == None:
@@ -218,6 +232,10 @@ class EMS(MainWindow):
         self.buttons["cancel"].setHidden(not flag)
         self.buttons["delete"].setHidden(not flag)
         self.buttons["ok"].setHidden(not flag)
+
+    def setCheckboxesEditable(self, flag: bool):
+        for e in self.checkboxes.values():
+            e.setEnabled(flag)
 
     def clickCancelButton(self):
         ok = YesOrNoWindow("취소", "편집한 내용이 저장되지 않습니다.\n정말 취소 하시겠습니까?", self.origin).show()
@@ -380,22 +398,9 @@ class EMS(MainWindow):
         sub = EMSLeaveWindow(self.__data["leave_data"], key, self.__is_editable)
         sub.show()
 
-    # def yesOrNoWindow(self, title: str, description: str):
-    #     sub = QDialog(self.origin)
-    #     sub.setFixedSize(270, 120)
-    #     sub.move(self.origin.x()+self.origin.width()//2-sub.width()//2, self.origin.y()+self.origin.height()//2-sub.height()//2)
-    #     sub.setWindowTitle(title)
-    #     sub.setFont(self.origin.font())
-    #     main_layout = QVBoxLayout(sub)
-    #     button_layout = QHBoxLayout()
-    #     button_layout.addItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
-    #     cancel_button = QPushButton("아니오", sub)
-    #     cancel_button.clicked.connect(sub.reject)
-    #     button_layout.addWidget(cancel_button)
-    #     ok_button = QPushButton("예", sub)
-    #     ok_button.clicked.connect(sub.accept)
-    #     button_layout.addWidget(ok_button)
-    #     main_layout.addWidget(QLabel(description, sub))
-    #     main_layout.addLayout(button_layout)
-    #     sub.setLayout(main_layout)
-    #     return sub.exec_()
+    def clickDisabilityCheckbox(self):
+        if self.checkboxes["disability"].isChecked():
+            self.textboxes["disability"].setEditable(True)
+        else:
+            self.textboxes["disability"].setEditable(False)
+            self.textboxes["disability"].setText("")

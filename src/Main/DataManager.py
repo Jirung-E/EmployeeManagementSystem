@@ -5,7 +5,7 @@ from typing import Dict
 
 class DataManager:
     def __init__(self):
-        self.__path = "./testData/"
+        self.__path = "./data/"
         self.__data: Dict[str, Data] = {
             "employee_data": Table(self.__path + "직원정보.csv"),
             "pay_data": Table(self.__path + "급여.csv"),
