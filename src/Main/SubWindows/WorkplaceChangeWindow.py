@@ -5,7 +5,7 @@ from GuiInterfaces.PyQt5.Gui.Widgets import *
 
 from Data import List
 
-workplace_change_window = uic.loadUiType("./UI/duty_change_window.ui")[0]
+workplace_change_window = uic.loadUiType("./.ui/duty_change_window.ui")[0]
 
 class EMSWorkplaceChangeWindow(QDialog, workplace_change_window):
     def __init__(self, current_data: str = None):
@@ -16,7 +16,7 @@ class EMSWorkplaceChangeWindow(QDialog, workplace_change_window):
 
     def _initUI(self):
         self.setupUi(self)
-        items = List("./testData/사업장.json").data()
+        items = List("./data/사업장.json").data()
         self.duty_select_textbox.addItems(items)
         if self.__current_data != None:
             self.duty_select_textbox.setCurrentText(self.__current_data)

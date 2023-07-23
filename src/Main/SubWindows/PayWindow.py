@@ -8,7 +8,7 @@ from typing import Dict
 
 from Data.Table import Table
 
-pay_window = uic.loadUiType("./UI/pay_window.ui")[0]
+pay_window = uic.loadUiType("./.ui/pay_window.ui")[0]
 
 class EMSPayWindow(QDialog, pay_window):
     def __init__(self, data: Table, employee_number: str, is_editable: bool):

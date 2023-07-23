@@ -7,7 +7,7 @@ from Main.SubWindows.YesOrNoWindow import *
 
 from Data import Table
 
-leave_window = uic.loadUiType("./UI/leave_window.ui")[0]
+leave_window = uic.loadUiType("./.ui/leave_window.ui")[0]
 
 class EMSLeaveWindow(QDialog, leave_window):
     def __init__(self, data: Table, employee_number: str, is_editable: bool):

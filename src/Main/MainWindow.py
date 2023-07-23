@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QCloseEvent
 from PyQt5 import uic
 
-mainwindow = uic.loadUiType("./UI/mainwindow.ui")[0]
+mainwindow = uic.loadUiType("./.ui/mainwindow.ui")[0]
 
 class MainForm(QMainWindow, mainwindow):
     def __init__(self):
