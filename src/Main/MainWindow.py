@@ -379,13 +379,13 @@ class EMS(MainWindow):
         print("click view more about workdate button")
 
     def clickDutyChangeButton(self):
-        sub = EMSDutyChangeWindow(self.textboxes["duty"].origin.text())
+        sub = ListViewWindow(self.__data["duty_data"], "직책", "직책")
         duty, ok = sub.show()
         if ok:
             self.textboxes["duty"].setText(duty)
 
     def clickWorkplaceChangeButton(self):
-        sub = EMSWorkplaceChangeWindow(self.textboxes["workplace"].origin.text())
+        sub = ListViewWindow(self.__data["workplace_data"], "사업장", "사업장")
         duty, ok = sub.show()
         if ok:
             self.textboxes["workplace"].setText(duty)
