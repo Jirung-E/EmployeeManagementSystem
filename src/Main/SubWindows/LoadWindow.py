@@ -9,7 +9,7 @@ from Data import List as ListData
 from typing import List
 from typing import Dict
 
-loadwindow = uic.loadUiType("./UI/load_window.ui")[0]
+loadwindow = uic.loadUiType("./.ui/load_window.ui")[0]
 
 class ListViewer:
     def __init__(self, origin: QListView):
@@ -104,7 +104,7 @@ class EMSLoadWindow(QDialog, loadwindow):
     def __setFilter2(self, filter: str):
         self.search_filter_2.clear()
         self.search_filter_2.setEnabled(True)
-        items = ListData("./testData/" + filter + ".json").data()
+        items = ListData("./data/" + filter + ".json").data()
         self.search_filter_2.addItems(items)
 
     def __showFilteredResult(self):
